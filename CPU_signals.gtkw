@@ -1,0 +1,48 @@
+[*]
+[*] GTKWave Analyzer v3.3.108 (w)1999-2020 BSI
+[*] Tue May 24 14:52:11 2022
+[*]
+[dumpfile] "C:\Users\guillese\Desktop\UCR 2022\verilog\tarea_1\CPU_y_Memoria.vcd"
+[dumpfile_mtime] "Tue May 24 14:28:10 2022"
+[dumpfile_size] 10747
+[savefile] "C:\Users\guillese\Desktop\UCR 2022\verilog\tarea_1\CPU_signals.gtkw"
+[timestart] 0
+[size] 1920 983
+[pos] -251 -248
+*-14.103209 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] Memoria_tb.
+[sst_width] 288
+[signals_width] 140
+[sst_expanded] 1
+[sst_vpaned_height] 288
+@28
+Memoria_tb.cpu.clk
+@c02028
+[color] 7
+^1 C:\Users\guillese\Desktop\UCR 2022\verilog\tarea_1\opcodes.gtkw
+Memoria_tb.cpu.opcode[4:0]
+@28
+(0)Memoria_tb.cpu.opcode[4:0]
+(1)Memoria_tb.cpu.opcode[4:0]
+(2)Memoria_tb.cpu.opcode[4:0]
+(3)Memoria_tb.cpu.opcode[4:0]
+(4)Memoria_tb.cpu.opcode[4:0]
+@1401208
+-group_end
+@22
+Memoria_tb.cpu.opcode[4:0]
+@c02028
+[color] 7
+^3 C:\Users\guillese\Desktop\UCR 2022\verilog\tarea_1\stages.gtkw
+Memoria_tb.cpu.stage[3:0]
+@28
+(0)Memoria_tb.cpu.stage[3:0]
+(1)Memoria_tb.cpu.stage[3:0]
+(2)Memoria_tb.cpu.stage[3:0]
+(3)Memoria_tb.cpu.stage[3:0]
+@1401208
+-group_end
+@28
+Memoria_tb.cpu.stage[3:0]
+[pattern_trace] 1
+[pattern_trace] 0
