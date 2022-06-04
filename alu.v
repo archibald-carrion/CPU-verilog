@@ -112,6 +112,98 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 		`OP_JZ: begin
 		
 		end
+		
+		`OPD_NOP: begin
+		
+		end
+		
+		`OPD_HLT: begin
+		
+		end
+		
+		`OPD_LD_INM: begin
+		
+		end
+		
+		`OPD_LD_REG: begin
+		
+		end
+		
+		`OPD_LD_DIRECT: begin
+		
+		end
+		
+		`OPD_LD_INDREG: begin
+		
+		end
+		
+		`OPD_STR_DIRECT: begin
+		
+		end
+		
+		`OPD_STR_INDREG: begin
+		
+		end
+		
+		`OPD_NOT: begin
+			
+		end
+		
+		`OPD_AND: begin
+		
+		end
+		
+		`OPD_OR: begin
+		
+		end
+		
+		`OPD_XOR: begin
+		
+		end
+		
+		`OPD_NEG: begin
+		
+		end
+
+		`OPD_ADD: begin
+			
+		end
+		
+		`OPD_SUB: begin
+		
+		end
+		
+		`OPD_MUL: begin
+		
+		end
+		
+		`OPD_DIV: begin
+		
+		end
+		
+		`OPD_MOD: begin
+		
+		end
+		
+		`OPD_JMP: begin
+		
+		end
+		
+		`OPD_JC: begin
+		
+		end
+		
+		`OPD_JS: begin
+		
+		end
+		
+		`OPD_JO: begin
+		
+		end
+		
+		`OPD_JZ: begin
+		
+		end
 
 		default: begin
 			// El opcode no esta implementado o bien no es un
