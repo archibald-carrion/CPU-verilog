@@ -35,8 +35,7 @@ module Mem_D32b_A16b(data_out, data_in, address, write, clk);
     end
   end
   
-  // Para leer/escribir archivos de texto como memorias en verilog (nos permite una inicialización
-  // más flexible)
+  // Para leer/escribir archivos de texto como memorias en verilog (nos permite una inicialización más flexible)
   // https://stackoverflow.com/questions/628603/what-is-the-function-of-readmemh-and-writememh-in-verilog
   // Otro tutorial: https://www.fullchipdesign.com/readmemh.htm
   //
