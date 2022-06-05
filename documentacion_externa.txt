@@ -1,0 +1,10 @@
+Comandos para compilar : 
+(hay un comando para cada testbench)
+
+
+iverilog alu.v cpu.v memoria.v registros.v alu_tb.v
+iverilog alu.v cpu.v memoria.v registros.v cpu_tb.v
+iverilog alu.v cpu.v memoria.v registros.v memoria_tb.v
+iverilog alu.v cpu.v memoria.v registros.v registros_tb.v
+
+Comandos adicionales :
