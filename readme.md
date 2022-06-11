@@ -18,7 +18,7 @@ The project contains the following files :
 ## Project objectives :
 - [ ] Finish alu.v file
 - [ ] Finish cpu.v file
-- [x] Finish the testbench
+- [ ] Finish the testbench
 - [ ] Finish registros.v file
 - [ ] Finish memoria.v file
 ## Compilation & test running commands :
