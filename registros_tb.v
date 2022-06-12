@@ -8,9 +8,9 @@ Circuito de prueba para el circuito registro.v
 `timescale 1us/100ns
 
 module Register_tb;
- // wire [31:0] data_salida;
-  //reg  [31:0] data_entrada;
-  //reg  [15:0] direccion;
+	wire [31:0] data_Output;
+	reg  [31:0] data_Input;
+	reg  [15:0] data_Dirrecion;
   //reg         escribir;
   //reg         clk;
   
@@ -34,4 +34,11 @@ module Register_tb;
      //               .address(direccion),
        //             .write(escribir),
          //           .clk(clk));
+		 
+		 
+		 
+	initial begin
+		$dumpfile("Registro.vcd");
+		$dumpvars;
+	end
 endmodule
