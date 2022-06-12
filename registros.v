@@ -12,3 +12,5 @@ module memoryRegister(dataOutput, dirrOutput, dataInput);
 	output reg [BITS_DATA-1:0] dataOutput;
 	output reg [BITS_ADDR-1:0] dirrOutput;
 	input [BITS_DATA-1:0] dataInput;
+	
+endmodule

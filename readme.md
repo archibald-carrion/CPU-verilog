@@ -25,10 +25,13 @@ The project contains the following files :
 - Whiteboard.png    (an illustration for better understanding of the problem)
 ## Project objectives :
 - [ ] Finish alu.v file
+- [ ] Finish alu_tb.v file
 - [ ] Finish cpu.v file
-- [ ] Finish the testbench
+- [ ] Finish cpu_tb.v file
 - [ ] Finish registros.v file
-- [ ] Finish memoria.v file
+- [ ] Finish registros_tb.v file
+- [x] Finish memoria.v file
+- [x] Finish memoria_tb.v file
 - [ ] Add a pipeline system (optional)
 - [ ] Implementation of the readmemh and writememh function (optional)
 ## Compilation & test running commands :
