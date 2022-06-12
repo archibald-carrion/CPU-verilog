@@ -4,6 +4,9 @@
 1. It's a very basic CPU :
     * it works with a very minimalistic instrucction set RISC
     * it doesn't have a pipeline system or any other speed augmentation technique
+2. Data size :
+    * A word is 32bits
+    * A dirrection is 16bits
 
 ## Content of the project :
 The project contains the following files :
@@ -27,6 +30,7 @@ The project contains the following files :
 - [ ] Finish registros.v file
 - [ ] Finish memoria.v file
 - [ ] Add a pipeline system (optional)
+- [ ] Implementation of the readmemh and writememh function (optional)
 ## Compilation & test running commands :
 There is a compile commend for each testbench file:
 ```
