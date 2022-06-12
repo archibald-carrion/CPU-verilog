@@ -1,7 +1,8 @@
 # CPU writen in Verilog hardware description language
 
 ## General informations about the project :
-
+1. It's a very basic CPU :
+    * we work with a very minimalistic instrucction set RISC
 
 ## Content of the project :
 The project contains the following files :
