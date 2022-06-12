@@ -42,3 +42,19 @@ iverilog alu.v cpu.v memoria.v registros.v cpu_tb.v
 iverilog alu.v cpu.v memoria.v registros.v memoria_tb.v
 iverilog alu.v cpu.v memoria.v registros.v registros_tb.v
 ```
+Once compiled, there is an a.out file that we can execute.
+To execute the .out file we use the following command :
+```
+vvp a.out
+```
+During the execution we can see all the "monitor" function that we have in the code to debbug the circuit.
+Once executed, thanks those 2 instrucction in the code :  
+note : the dumpFileName depend on wich testbench you compiled, because each testbench have a different .vcd file that contains the grafic of it's own circuit.
+```verilog
+$dumpfile("dumpFileName.vcd");
+$dumpvars;		 
+```
+We have a new file, the dumpFileName.vcd file that can be open with the following instruction to visualize the circuit :
+```
+gtkwave dumpFileName.vcd
+```
