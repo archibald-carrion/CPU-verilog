@@ -2,7 +2,8 @@
 
 ## General informations about the project :
 1. It's a very basic CPU :
-    * we work with a very minimalistic instrucction set RISC
+    * it works with a very minimalistic instrucction set RISC
+    * it doesn't have a pipeline system or any other speed augmentation technique
 
 ## Content of the project :
 The project contains the following files :
