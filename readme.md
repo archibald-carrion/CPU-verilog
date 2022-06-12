@@ -1,5 +1,8 @@
 # CPU writen in Verilog hardware description language
 
+## General informations about the project :
+
+
 ## Content of the project :
 The project contains the following files :
 - alu.v
