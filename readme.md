@@ -26,6 +26,7 @@ The project contains the following files :
 - [ ] Finish the testbench
 - [ ] Finish registros.v file
 - [ ] Finish memoria.v file
+- [ ] Add a pipeline system (optional)
 ## Compilation & test running commands :
 There is a compile commend for each testbench file:
 ```
