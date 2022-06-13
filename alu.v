@@ -35,13 +35,13 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 			
 			end
 			
-			`OP_LD: begin 	//LOAD
+			//`OP_LD: begin 	//LOAD
 			
-			end
+			//end
 			
-			`OP_STR: begin	//STORE
+			//`OP_STR: begin	//STORE
 			
-			end
+			//end
 			
 			`OP_NOT: begin	//NOT gate
 				resultado = ~operando_a;
@@ -59,9 +59,9 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 			
 			end
 			
-			`OP_XOR: begin	//XOR gate
+			//`OP_XOR: begin	//XOR gate
 			
-			end
+			//end
 			
 			`OP_NEG: begin	//negation
 			
@@ -80,37 +80,37 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 			
 			end
 			
-			`OP_MUL: begin	//multiplication
+			//`OP_MUL: begin	//multiplication
 			
-			end
+			//end
 			
-			`OP_DIV: begin	//division
+			//`OP_DIV: begin	//division
 			
-			end
+			//end
 			
-			`OP_MOD: begin 	//modulo
+			//`OP_MOD: begin 	//modulo
 			
-			end
+			//end
 			
-			`OP_JMP: begin
+			//`OP_JMP: begin
 			
-			end
+			//end
 			
-			`OP_JC: begin
+			//`OP_JC: begin
 			
-			end
+			//end
 			
-			`OP_JS: begin
+			//`OP_JS: begin
 			
-			end
+			//end
 			
-			`OP_JO: begin
+			//`OP_JO: begin
 			
-			end
+			//end
 			
-			`OP_JZ: begin
+			//`OP_JZ: begin
 			
-			end
+			//end
 
 			default: begin
 				// El opcode no esta implementado o bien no es un
