@@ -3,6 +3,8 @@ Universidad de Costa Rica
 CI-0114: Fundamentos de Arquitectura
 
 Circuito simple de registro que permite almacenar 32 bits
+
+iverilog registros.v registros_tb.v
 *****************************/
 
 module registersArray(inputData, outputData1, outputData2, dirrInput, dirrOutput1, dirrOutput2);
@@ -30,39 +32,38 @@ module registersArray(inputData, outputData1, outputData2, dirrInput, dirrOutput
 		case (dirrInput)
 			'b000: begin
 				R0 = inputData;
-				//code
 			end
 			
 			'b001: begin
-				//code
+				R1 = inputData;
 			end
 			
 			'b010: begin
-				//code
+				R2 = inputData;
 			end
 			
 			'b011: begin
-				//code
+				R3 = inputData;
 			end
 			
 			'b100: begin
-				//code
+				R4 = inputData;
 			end
 			
 			'b101: begin
-				//code
+				R5 = inputData;
 			end
 			
 			'b110: begin
-				//code
+				R6 = inputData;
 			end
 			
 			'b111: begin
-				//code
+				R7 = inputData;
 			end
 			
 			default: begin
-				//code
+				//caso default
 			end
 		endcase	
 	end
