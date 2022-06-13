@@ -8,17 +8,18 @@ iverilog registros.v registros_tb.v
 *****************************/
 
 module registersArray(inputData, dirrInput, dirrOutput1, dirrOutput2, outputData1, outputData2);
-	parameter BITS_DATA = 32;	//tamano de los registros
-	parameter BITS_ADDR = 3;	//dirrecion que permite saber con cual registro trabajar
+	parameter BITS_DATA = 32;								//tamano de los registros
+	parameter BITS_ADDR = 3;								//tamano de las dirreciones
 	
-	input [BITS_DATA-1:0] inputData;
-	input [BITS_ADDR-1:0] dirrInput;
-	input [BITS_ADDR-1:0] dirrOutput1;
-	input [BITS_ADDR-1:0] dirrOutput2;
-	output reg [BITS_DATA-1:0] outputData1;
-	output reg [BITS_DATA-1:0] outputData2;
+	input [BITS_DATA-1:0] inputData;						//data que hay que agregar en uno de los registros
+	input [BITS_ADDR-1:0] dirrInput;						//posicion donde hay que agregar el data inputData
+	input [BITS_ADDR-1:0] dirrOutput1;						//posicion del elemento que se quiere sacar de la lista de registros y se guarda en outputData1
+	input [BITS_ADDR-1:0] dirrOutput2;						//posicion del elemento que se quiere sacar de la lista de registros y se guarda en outputData2
+	output reg [BITS_DATA-1:0] outputData1;					//data sacado del array de registros
+	output reg [BITS_DATA-1:0] outputData2;					//data sacado del array de registros
 	
 	
+	//"arreglo" de todos los registers de 32 bits
 	reg [BITS_DATA-1:0] R0;
 	reg [BITS_DATA-1:0] R1;
 	reg [BITS_DATA-1:0] R2;

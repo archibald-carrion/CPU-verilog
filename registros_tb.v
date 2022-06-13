@@ -8,15 +8,16 @@ Circuito de prueba para el circuito registro.v
 `timescale 1us/100ns
 
 module Register_tb;
-	//reg [31:0] data_Output;
-	//reg  [31:0] data_Input;
-	//reg  [15:0] data_Dirrecion;
+	reg [31:0] data_Output;
+	reg  [31:0] data_Input;
+	reg  [2:0] dirr;
   
 	initial begin
 		$dumpfile("registros.vcd");
 		$dumpvars;
 		// en 1 registor cabe 32bits, lo cual son 4 bytes, y por lo tanto 4 char
 		
+		//monitor instruction 
 		
 		//clk = 1; escribir = 0;
 		//#1 direccion = 5;
