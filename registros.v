@@ -29,6 +29,7 @@ module registersArray(inputData, outputData1, outputData2, dirrInput, dirrOutput
 	always @(dirrInput) begin
 		case (dirrInput)
 			'b000: begin
+				R0 = inputData;
 				//code
 			end
 			
