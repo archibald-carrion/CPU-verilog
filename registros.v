@@ -5,7 +5,15 @@ CI-0114: Fundamentos de Arquitectura
 Circuito simple de registro que permite almacenar 32 bits
 *****************************/
 
-module registersArray();
+module registersArray(inputData, outputData1, outputData2, dirrInput, dirrOutput1, dirrOutput2);
+	parameter BITS_DATA = 32;	//tamano de los registros
+	parameter BITS_ADDR = 3;	//dirrecion que permite saber con cual registro trabajar
+	
+	
+	
+	
+	
+	
 	//parameter BITS_DATA = 32;
 	//parameter BITS_ADDR = 16;
 	

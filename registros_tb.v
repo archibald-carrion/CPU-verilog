@@ -30,7 +30,7 @@ module Register_tb;
 		//#6 $finish;
 	end
 	
-	registersArray registro();
+	//registersArray registro();
 	//Mem_D32b_A16b mem(.data_out(data_salida),.data_in(data_entrada),.address(direccion),.write(escribir),.clk(clk));
 endmodule
 
