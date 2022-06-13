@@ -25,7 +25,90 @@ module registersArray(inputData, outputData1, outputData2, dirrInput, dirrOutput
 	reg [BITS_DATA-1:0] R6;
 	reg [BITS_DATA-1:0] R7;
 	
+	//para agregar un elemento en el arreglo de registros
 	always @(dirrInput) begin
+		case (dirrInput)
+			'b000: begin
+				//code
+			end
+			
+			'b001: begin
+				//code
+			end
+			
+			'b010: begin
+				//code
+			end
+			
+			'b011: begin
+				//code
+			end
+			
+			'b100: begin
+				//code
+			end
+			
+			'b101: begin
+				//code
+			end
+			
+			'b110: begin
+				//code
+			end
+			
+			'b111: begin
+				//code
+			end
+			
+			default: begin
+				//code
+			end
+		endcase	
+	end
+	
+	//para sacar un primer elemento del arreglo de registros
+	always @(dirrOutput1) begin
+		case (dirrInput)
+			'b000: begin
+				//code
+			end
+			
+			'b001: begin
+				//code
+			end
+			
+			'b010: begin
+				//code
+			end
+			
+			'b011: begin
+				//code
+			end
+			
+			'b100: begin
+				//code
+			end
+			
+			'b101: begin
+				//code
+			end
+			
+			'b110: begin
+				//code
+			end
+			
+			'b111: begin
+				//code
+			end
+			
+			default: begin
+				//code
+			end
+		endcase	
+	end
+	
+	//para sacar un segundo elemento del arreglo de registros
+	always @(dirrOutput2) begin
 		case (dirrInput)
 			'b000: begin
 				//code
