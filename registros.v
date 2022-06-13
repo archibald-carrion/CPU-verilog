@@ -25,6 +25,45 @@ module registersArray(inputData, outputData1, outputData2, dirrInput, dirrOutput
 	reg [BITS_DATA-1:0] R6;
 	reg [BITS_DATA-1:0] R7;
 	
+	always @(dirrInput) begin
+		case (dirrInput)
+			'b000: begin
+				//code
+			end
+			
+			'b001: begin
+				//code
+			end
+			
+			'b010: begin
+				//code
+			end
+			
+			'b011: begin
+				//code
+			end
+			
+			'b100: begin
+				//code
+			end
+			
+			'b101: begin
+				//code
+			end
+			
+			'b110: begin
+				//code
+			end
+			
+			'b111: begin
+				//code
+			end
+			
+			default: begin
+				//code
+			end
+		endcase	
+	end
 	//WE WILL USE A SWITCH FOR EVERY CASE OF DIRR OUTPUT
 	
 	
