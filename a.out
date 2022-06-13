@@ -1,0 +1,27 @@
+#! /c/Source/iverilog-install/bin/vvp
+:ivl_version "12.0 (devel)" "(s20150603-1110-g18392a46)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision - 7;
+:vpi_module "C:\iverilog\lib\ivl\system.vpi";
+:vpi_module "C:\iverilog\lib\ivl\vhdl_sys.vpi";
+:vpi_module "C:\iverilog\lib\ivl\vhdl_textio.vpi";
+:vpi_module "C:\iverilog\lib\ivl\v2005_math.vpi";
+:vpi_module "C:\iverilog\lib\ivl\va_math.vpi";
+S_000001c6067e63f0 .scope module, "Register_tb" "Register_tb" 2 10;
+ .timescale -6 -7;
+S_000001c6067e6580 .scope module, "registro" "registersArray" 2 33, 3 8 0, S_000001c6067e63f0;
+ .timescale 0 0;
+    .scope S_000001c6067e63f0;
+T_0 ;
+    %vpi_call 2 16 "$dumpfile", "registros.vcd" {0 0 0};
+    %vpi_call 2 17 "$dumpvars" {0 0 0};
+    %delay 10, 0;
+    %vpi_call 2 27 "$finish" {0 0 0};
+    %end;
+    .thread T_0;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "registros_tb.v";
+    "registros.v";
