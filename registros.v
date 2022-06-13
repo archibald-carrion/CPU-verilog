@@ -13,10 +13,10 @@ module registersArray(inputData, outputData1, outputData2, dirrInput, dirrOutput
 	
 	input [BITS_DATA-1:0] inputData;
 	input [BITS_ADDR-1:0] dirrInput;
-	output [BITS_DATA-1:0] outputData1;
-	output [BITS_DATA-1:0] outputData2;
-	output [BITS_ADDR-1:0] dirrOutput1;
-	output [BITS_ADDR-1:0] dirrOutput2;
+	output reg [BITS_DATA-1:0] outputData1;
+	output reg [BITS_DATA-1:0] outputData2;
+	output reg [BITS_ADDR-1:0] dirrOutput1;
+	output reg [BITS_ADDR-1:0] dirrOutput2;
 	
 	reg [BITS_DATA-1:0] R0;
 	reg [BITS_DATA-1:0] R1;
@@ -32,6 +32,7 @@ module registersArray(inputData, outputData1, outputData2, dirrInput, dirrOutput
 		case (dirrInput)
 			'b000: begin
 				R0 = inputData;
+				
 			end
 			
 			'b001: begin
@@ -63,7 +64,7 @@ module registersArray(inputData, outputData1, outputData2, dirrInput, dirrOutput
 			end
 			
 			default: begin
-				//caso default
+				//default case
 			end
 		endcase	
 	end
@@ -72,39 +73,47 @@ module registersArray(inputData, outputData1, outputData2, dirrInput, dirrOutput
 	always @(dirrOutput1) begin
 		case (dirrInput)
 			'b000: begin
-				//code
+				outputData1 = R0;
+				dirrOutput1 <= R0[7:5];
 			end
 			
 			'b001: begin
-				//code
+				outputData1 = R1;
+				dirrOutput1 <= R1[7:5];
 			end
 			
 			'b010: begin
-				//code
+				outputData1 = R2;
+				dirrOutput1 <= R2[7:5];
 			end
 			
 			'b011: begin
-				//code
+				outputData1 = R3;
+				dirrOutput1 <= R3[7:5];
 			end
 			
 			'b100: begin
-				//code
+				outputData1 = R4;
+				dirrOutput1 <= R4[7:5];
 			end
 			
 			'b101: begin
-				//code
+				outputData1 = R5;
+				dirrOutput1 <= R5[7:5];
 			end
 			
 			'b110: begin
-				//code
+				outputData1 = R6;
+				dirrOutput1 <= R6[7:5];
 			end
 			
 			'b111: begin
-				//code
+				outputData1 = R7;
+				dirrOutput1 <= R7[7:5];
 			end
 			
 			default: begin
-				//code
+				//default case
 			end
 		endcase	
 	end
