@@ -10,7 +10,7 @@ Circuito de prueba para el circuito registro.v
 module Register_tb;
 	wire [31:0] data_Output;
 	reg  [31:0] data_Input;
-	reg  [15:0] data_Dirrecion;
+	wire  [15:0] data_Dirrecion;
   
 	initial begin
 		$dumpfile("Registro.vcd");
@@ -21,9 +21,9 @@ module Register_tb;
 		//clk = 1; escribir = 0;
 		//#1 direccion = 5;
 		//#2 data_entrada = 'hACED_CAFE; direccion = 4; escribir = 1;
-		#1 data_Input = 'hHOLA;
-		#1 data_Input = 'hJAJA
-		#1 $finish;
+		//#1 data_Input = 'hHOLA;
+		//#1 data_Input = 'hJAJA
+		//#1 $finish;
 		//#1 escribir = 0;
 		//#1 direccion = 3; data_entrada = 'hDEAD_BEEF;
 		//#6 $finish;
