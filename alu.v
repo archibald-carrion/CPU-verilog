@@ -27,23 +27,23 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 	  // La lógica combinacional debe usar asignación bloqueante
 	always @* begin
 		case (opcode)
-			`OP_NOP: begin
+			`OP_NOP: begin	//NO OPERATION
 			
 			end
 			
-			`OP_HLT: begin
+			`OP_HLT: begin	//HALT
 			
 			end
 			
-			`OP_LD: begin 
+			`OP_LD: begin 	//LOAD
 			
 			end
 			
-			`OP_STR: begin
+			`OP_STR: begin	//STORE
 			
 			end
 			
-			`OP_NOT: begin
+			`OP_NOT: begin	//NOT gate
 				resultado = ~operando_a;
 				C = 0;
 				S = resultado[BITS_DATA-1];
@@ -51,23 +51,23 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 				Z = ~(|resultado);
 			end
 			
-			`OP_AND: begin
+			`OP_AND: begin	//AND gate
 			
 			end
 			
-			`OP_OR: begin
+			`OP_OR: begin	//OR gate
 			
 			end
 			
-			`OP_XOR: begin
+			`OP_XOR: begin	//XOR gate
 			
 			end
 			
-			`OP_NEG: begin
+			`OP_NEG: begin	//negation
 			
 			end
 
-			`OP_ADD: begin
+			`OP_ADD: begin	//addition
 				{C,resultado} = operando_a + operando_b;
 				S = resultado[BITS_DATA-1];
 				// Overflow es 1 cuando hay cambio en el bit de signo. Solo
@@ -76,19 +76,19 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 				Z = ~(|resultado);
 			end
 			
-			`OP_SUB: begin
+			`OP_SUB: begin	//substraction
 			
 			end
 			
-			`OP_MUL: begin
+			`OP_MUL: begin	//multiplication
 			
 			end
 			
-			`OP_DIV: begin
+			`OP_DIV: begin	//division
 			
 			end
 			
-			`OP_MOD: begin
+			`OP_MOD: begin 	//modulo
 			
 			end
 			
@@ -109,98 +109,6 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 			end
 			
 			`OP_JZ: begin
-			
-			end
-			
-			`OPD_NOP: begin
-			
-			end
-			
-			`OPD_HLT: begin
-			
-			end
-			
-			`OPD_LD_INM: begin
-			
-			end
-			
-			`OPD_LD_REG: begin
-			
-			end
-			
-			`OPD_LD_DIRECT: begin
-			
-			end
-			
-			`OPD_LD_INDREG: begin
-			
-			end
-			
-			`OPD_STR_DIRECT: begin
-			
-			end
-			
-			`OPD_STR_INDREG: begin
-			
-			end
-			
-			`OPD_NOT: begin
-				
-			end
-			
-			`OPD_AND: begin
-			
-			end
-			
-			`OPD_OR: begin
-			
-			end
-			
-			`OPD_XOR: begin
-			
-			end
-			
-			`OPD_NEG: begin
-			
-			end
-
-			`OPD_ADD: begin
-				
-			end
-			
-			`OPD_SUB: begin
-			
-			end
-			
-			`OPD_MUL: begin
-			
-			end
-			
-			`OPD_DIV: begin
-			
-			end
-			
-			`OPD_MOD: begin
-			
-			end
-			
-			`OPD_JMP: begin
-			
-			end
-			
-			`OPD_JC: begin
-			
-			end
-			
-			`OPD_JS: begin
-			
-			end
-			
-			`OPD_JO: begin
-			
-			end
-			
-			`OPD_JZ: begin
 			
 			end
 
