@@ -18,7 +18,6 @@ module registersArray(inputData, dirrInput, dirrOutput1, dirrOutput2, outputData
 	output reg [BITS_DATA-1:0] outputData1;					//data sacado del array de registros
 	output reg [BITS_DATA-1:0] outputData2;					//data sacado del array de registros
 	
-	
 	//"arreglo" de todos los registers de 32 bits
 	reg [BITS_DATA-1:0] R0;
 	reg [BITS_DATA-1:0] R1;

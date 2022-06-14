@@ -1,5 +1,5 @@
 $date
-	Mon Jun 13 18:16:05 2022
+	Mon Jun 13 18:42:07 2022
 $end
 $version
 	Icarus Verilog
@@ -8,14 +8,13 @@ $timescale
 	100ns
 $end
 $scope module Register_tb $end
-$var reg 3 ! _dirrInput [2:0] $end
-$var reg 3 " _dirrOutput1 [2:0] $end
-$var reg 3 # _dirrOutput2 [2:0] $end
-$var reg 32 $ _inputData [31:0] $end
-$var reg 32 % _outputData1 [31:0] $end
-$var reg 32 & _outputData2 [31:0] $end
-$upscope $end
-$scope module registersArray $end
+$var wire 32 ! _outputData2 [31:0] $end
+$var wire 32 " _outputData1 [31:0] $end
+$var reg 3 # _dirrInput [2:0] $end
+$var reg 3 $ _dirrOutput1 [2:0] $end
+$var reg 3 % _dirrOutput2 [2:0] $end
+$var reg 32 & _inputData [31:0] $end
+$scope module registro $end
 $var wire 3 ' dirrInput [2:0] $end
 $var wire 3 ( dirrOutput1 [2:0] $end
 $var wire 3 ) dirrOutput2 [2:0] $end
@@ -31,6 +30,7 @@ $var reg 32 2 R7 [31:0] $end
 $var reg 32 3 outputData1 [31:0] $end
 $var reg 32 4 outputData2 [31:0] $end
 $upscope $end
+$upscope $end
 $enddefinitions $end
 #0
 $dumpvars
@@ -44,10 +44,10 @@ bx .
 bx -
 bx ,
 bx +
-bz *
-bz )
-bz (
-bz '
+bx *
+bx )
+bx (
+bx '
 bx &
 bx %
 bx $
@@ -56,7 +56,42 @@ bx "
 bx !
 $end
 #10
-b0 "
-b0 !
-b10101100111011011100101011111110 $
+b10101100111011011100101011111110 +
+b0 #
+b0 '
+b10101100111011011100101011111110 &
+b10101100111011011100101011111110 *
 #20
+b10101100111011011100101011111110 "
+b10101100111011011100101011111110 3
+b0 $
+b0 (
+#30
+b11011110101011011011111011101111 .
+b11 #
+b11 '
+b11011110101011011011111011101111 &
+b11011110101011011011111011101111 *
+#40
+bx "
+bx 3
+b10 $
+b10 (
+#50
+b11011110101011011011111011101111 2
+b111 #
+b111 '
+#60
+b11011110101011011011111011101111 "
+b11011110101011011011111011101111 3
+b111 $
+b111 (
+#70
+b11 $
+b11 (
+#80
+b10101100111011011100101011111110 "
+b10101100111011011100101011111110 3
+b0 $
+b0 (
+#90
