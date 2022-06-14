@@ -1,0 +1,62 @@
+$date
+	Mon Jun 13 18:16:05 2022
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	100ns
+$end
+$scope module Register_tb $end
+$var reg 3 ! _dirrInput [2:0] $end
+$var reg 3 " _dirrOutput1 [2:0] $end
+$var reg 3 # _dirrOutput2 [2:0] $end
+$var reg 32 $ _inputData [31:0] $end
+$var reg 32 % _outputData1 [31:0] $end
+$var reg 32 & _outputData2 [31:0] $end
+$upscope $end
+$scope module registersArray $end
+$var wire 3 ' dirrInput [2:0] $end
+$var wire 3 ( dirrOutput1 [2:0] $end
+$var wire 3 ) dirrOutput2 [2:0] $end
+$var wire 32 * inputData [31:0] $end
+$var reg 32 + R0 [31:0] $end
+$var reg 32 , R1 [31:0] $end
+$var reg 32 - R2 [31:0] $end
+$var reg 32 . R3 [31:0] $end
+$var reg 32 / R4 [31:0] $end
+$var reg 32 0 R5 [31:0] $end
+$var reg 32 1 R6 [31:0] $end
+$var reg 32 2 R7 [31:0] $end
+$var reg 32 3 outputData1 [31:0] $end
+$var reg 32 4 outputData2 [31:0] $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+bx 4
+bx 3
+bx 2
+bx 1
+bx 0
+bx /
+bx .
+bx -
+bx ,
+bx +
+bz *
+bz )
+bz (
+bz '
+bx &
+bx %
+bx $
+bx #
+bx "
+bx !
+$end
+#10
+b0 "
+b0 !
+b10101100111011011100101011111110 $
+#20
