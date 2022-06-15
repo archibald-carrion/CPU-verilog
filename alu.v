@@ -26,6 +26,8 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 	  // ya que no depende de ningún reloj
 	  // La lógica combinacional debe usar asignación bloqueante
 	always @* begin
+	
+		//solo hay que hacer la parte de decodificacion de la instruccion, no hay que ejecutarla <- hay que verificar eso
 		case (opcode)
 			`OP_NOP: begin	//NO OPERATION
 			
