@@ -29,7 +29,7 @@ module Register_tb;
 		//monitor instruction para saber por donde vamos en el arra
 		$monitor("\n_inputData : %b \n_dirrInput : %b \n_dirrOutput1 : %b \n_dirrOutput2 : %b \n_outputData1 : %b \n_outputData2 : %b \n\n###############################################", _inputData, _dirrInput, _dirrOutput1, _dirrOutput2, _outputData1, _outputData2);
 		
-		#1 _inputData = 'hACED_CAFE; _dirrInput = 'b000;
+		#1 _inputData = 'hACED_CAFE; _dirrInput = 'b000; //el underscore es un simbolo "ignorado" por el compilador
 		#1 _dirrOutput1 = 'b000;
 		#1 _inputData = 'hDEAD_BEEF; _dirrInput = 'b011;
 		#1 _dirrOutput1 = 'b010;
