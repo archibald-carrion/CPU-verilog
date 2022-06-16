@@ -3,6 +3,9 @@ Universidad de Costa Rica
 CI-0114: Fundamentos de Arquitectura
 
 Prueba para la ALU
+
+Archibald Emmanuel Carrion Claeys
+C01736
 iverilog alu.v alu_tb.v
 *********************************/
 
@@ -16,7 +19,7 @@ module ALU_tb;
   reg  [4:0]  op;
  
   initial begin
-    $dumpfile("ALU.vcd");
+    $dumpfile("alu.vcd");
     $dumpvars;
 	$monitor("\n opcode : %b \n Output : %b \n C flag : %b \n S flag : %b \n O flag : %b \n Z flag : %b \n A Operand : %b \n B Operand : %b \n\n##############################################", op, R, C, S, O , Z, A, B);
 	
@@ -26,7 +29,7 @@ module ALU_tb;
 	//aqui hay que poner todos las instruccioens de prueba
 	
 	
-	/*
+
     #1 op = `OP_ADD; A = 0; B = 0;
     #1 op = `OP_ADD; A = 32'h8000_0000; B = 32'h8000_0000;
     #1 op = `OP_ADD; A = 32'hFFFF_0000; B = 32'hFFFF_FFFF;
@@ -35,7 +38,7 @@ module ALU_tb;
     #1 op = `OP_ADD; A = 32'h7FFF_0000; B = 32'h0FFF_1111;
     #1 op = `OP_NOT; A = 32'hACED_CAFE; B = 32'hXXXX_XXXX;
     #1 op = `OP_NOT; A = R; B = 32'hXXXX_XXXX;
-	*/
+
     #1 $finish;
   end
   

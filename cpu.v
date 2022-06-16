@@ -2,11 +2,11 @@
 Universidad de Costa Rica
 CI-0114: Fundamentos de Arquitectura
 
-Modulo de CPU vacío
+Modulo de CPU completado
+Archibald Emmanuel Carrion Claeys
+C01736
 
-Ancho de palabra (Datos) 32 bits
-Ancho de direcciones 16 bits (64Ki Words)
-
+Ancho de palabra (Datos) 32 bits, ancho de direcciones 16 bits (64Ki Words)
 *********************************/
 
 `include "opcodes.vh"

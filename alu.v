@@ -2,6 +2,8 @@
 Universidad de Costa Rica
 CI-0114: Fundamentos de Arquitectura
 
+Archibald Emmanuel Carrion Claeys
+C01736
 Modulo de una ALU combinacional, completamente implementada
 ************************************************************/
 
