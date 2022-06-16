@@ -18,7 +18,7 @@ module ALU_tb;
   initial begin
     $dumpfile("ALU.vcd");
     $dumpvars;
-	$monitor("\opcode : % ", op);
+	$monitor("\n opcode : %b \n Output : %b \n C flag : %b \n S flag : %b \n O flag : %b \n Z flag : %b \n A Operand : %b \n B Operand : %b \n\n##############################################", op, R, C, S, O , Z, A, B);
 	
 	
 	

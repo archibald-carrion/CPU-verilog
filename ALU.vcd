@@ -1,0 +1,53 @@
+$date
+	Thu Jun 16 08:30:00 2022
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	100ns
+$end
+$scope module ALU_tb $end
+$var wire 1 ! Z $end
+$var wire 1 " S $end
+$var wire 32 # R [31:0] $end
+$var wire 1 $ O $end
+$var wire 1 % C $end
+$var reg 32 & A [31:0] $end
+$var reg 32 ' B [31:0] $end
+$var reg 5 ( op [4:0] $end
+$scope module alu $end
+$var wire 5 ) opcode [4:0] $end
+$var wire 32 * operando_a [31:0] $end
+$var wire 32 + operando_b [31:0] $end
+$var reg 1 % C $end
+$var reg 1 $ O $end
+$var reg 1 " S $end
+$var reg 1 ! Z $end
+$var reg 32 , resultado [31:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+bx ,
+bx +
+bx *
+bx )
+bx (
+bx '
+bx &
+x%
+x$
+bx #
+x"
+x!
+$end
+#10
+b0 '
+b0 +
+b0 &
+b0 *
+b0 (
+b0 )
+#20
