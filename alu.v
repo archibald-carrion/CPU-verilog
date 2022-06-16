@@ -31,9 +31,14 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 		case (opcode)
 			`OP_NOP: begin	//NO OPERATION
 			
+				C = 0;
+				S = 'bX;
+			
 			end
 			
 			`OP_HLT: begin	//HALT
+				C = 0;
+				S = 'bX;
 			
 			end
 			
@@ -54,10 +59,14 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 			end
 			
 			`OP_AND: begin	//AND gate
+				C = 0;
+				S = resultado[BITS_DATA-1];
 			
 			end
 			
 			`OP_OR: begin	//OR gate
+				C = 0;
+				S = resultado[BITS_DATA-1];
 			
 			end
 			
@@ -66,6 +75,9 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 			//end
 			
 			`OP_NEG: begin	//negation
+			
+				C = 0;
+				S = resultado[BITS_DATA-1];
 			
 			end
 
@@ -79,6 +91,10 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 			end
 			
 			`OP_SUB: begin	//substraction
+				{C,resultado} = operando_a + operando_b;
+				S = resultado[BITS_DATA-1];
+				O = (operando_a[BITS_DATA-1] == operando_b[BITS_DATA-1]) && (operando_a[BITS_DATA-1] !=  resultado[BITS_DATA-1]);
+				z = ~(|resultado);
 			
 			end
 			
@@ -115,9 +131,7 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 			//end
 
 			default: begin
-				// El opcode no esta implementado o bien no es un
-				// opcode de ALU valido. Intencionalmente propagaremos
-				// Xs (indeterminado) a las salidas 
+				// El opcode no esta implementado o bien no es un opcode de ALU valido. Intencionalmente propagaremos Xs (indeterminado) a las salidas 
 				resultado = 'hXXXX_XXXX;
 				C = 'bx;
 				S = 'bx;
