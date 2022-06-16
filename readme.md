@@ -25,7 +25,7 @@ The project contains the following files :
 - Whiteboard.png    (an illustration for better understanding of the problem)
 ## Project objectives :
 - [x] Finish alu.v file
-- [ ] Finish alu_tb.v file
+- [x] Finish alu_tb.v file
 - [ ] Finish cpu.v file
 - [ ] Finish cpu_tb.v file
 - [x] Finish registros.v file
