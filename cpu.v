@@ -7,6 +7,7 @@ Archibald Emmanuel Carrion Claeys
 C01736
 
 Ancho de palabra (Datos) 32 bits, ancho de direcciones 16 bits (64Ki Words)
+iverilog alu.v cpu.v memoria.v registros.v cpu_tb.v
 *********************************/
 
 `include "opcodes.vh"
@@ -97,4 +98,6 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 			endcase
 		end
 	end
+	
+	//ALU alu(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 endmodule
