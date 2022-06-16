@@ -11,7 +11,7 @@ iverilog alu.v cpu.v memoria.v registros.v cpu_tb.v
 *********************************/
 
 `include "opcodes.vh"
-//son todos los stages del fetch cycle
+
 `define STAGE_FE_0 0
 `define STAGE_FE_1 1
 `define STAGE_DE_0 2
@@ -25,23 +25,25 @@ iverilog alu.v cpu.v memoria.v registros.v cpu_tb.v
 `define STAGE_HLT  10
 
 module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
-  parameter BITS_DATA = 32;
-  parameter BITS_ADDR = 16;
+	
+	parameter BITS_DATA = 32;
+	parameter BITS_ADDR = 16;
 
-  output reg [BITS_DATA-1:0] MBR_W;
-  output reg [BITS_ADDR-1:0] MAR;
-  output reg                 write;
+	output reg [BITS_DATA-1:0] MBR_W;
+	output reg [BITS_ADDR-1:0] MAR;
+	output reg                 write;
   
-  input  [BITS_DATA-1:0] MBR_R;
-  input                  reset;
-  input                  clk;
-  
-  reg [BITS_DATA-1:0] IR;
-  reg [BITS_ADDR-1:0] PC;
-  reg [4:0]           opcode;
-  
-  reg [3:0] stage;
-  
+	input  [BITS_DATA-1:0] MBR_R;
+	input                  reset;
+	input                  clk;
+ 
+	reg [BITS_DATA-1:0] IR;		//	--> instruction actual
+	reg [BITS_ADDR-1:0] PC;		//  --> adress of actual instruction
+	reg [4:0]           opcode;
+ 
+	reg [3:0] stage;
+	
+	//se ejecuta la maquina de estado durante los posedge del reloj
 	always @(posedge clk or reset) begin
 		if (reset) begin
 			stage <= `STAGE_FE_0;
@@ -97,6 +99,11 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 				end
 			endcase
 		end
+	end
+	
+	//se guarda los valores en los registros cuando es el negedge del reloj
+	always @(negedge clk) begin
+		//code
 	end
 	
 	//ALU alu(resultado, C, S, O, Z, operando_a, operando_b, opcode);
