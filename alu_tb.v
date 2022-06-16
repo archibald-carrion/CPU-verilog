@@ -26,25 +26,67 @@ module ALU_tb;
 	
 	
     #1 op = `OP_NOP; A = 0; B = 0;
-	//aqui hay que poner todos las instruccioens de prueba
 	
-	
-
-    //#1 op = `OP_ADD; A = 0; B = 0;
-    //#1 op = `OP_ADD; A = 32'h8000_0000; B = 32'h8000_0000;
-    #1 op = `OP_ADD; A = 32'hFFFF_0000; B = 32'hFFFF_FFFF;
-    //#1 op = `OP_ADD; A = 32'hFFFF_0000; B = 32'h0FFF_1111;
-    //#1 op = `OP_ADD; A = 32'h7FFF_0000; B = 32'h7FFF_1111;
-    //#1 op = `OP_ADD; A = 32'h7FFF_0000; B = 32'h0FFF_1111;
-    //#1 op = `OP_NOT; A = 32'hACED_CAFE; B = 32'hXXXX_XXXX;
-	#1 op = `OP_OR; A = 32'hFFFF_0000; B = 32'h0000_FFFF;
-    //#1 op = `OP_NOT; A = R; B = 32'hXXXX_XXXX;
-	#1 op = `OP_SUB; A = 32'hFFFF_FFFF; B = 32'h0000_0001;
-	#1 op = `OP_AND; A = 32'h0000_1111; B = 32'h1010_0011;	
-	#1 op = `OP_NEG; A = 32'hFFFF_FFFF;
 	#1 op = `OP_NOT; A = 32'h0000_FFFF;
+	#1 op = `OP_NOT; A = 32'hFFFF_FFFF;
+	#1 op = `OP_NOT; A = 32'h0000_0000;
+	#1 op = `OP_NOT; A = 32'h7777_7777;
+	#1 op = `OP_NOT; A = 32'hF000_FFFF;
+	
+    
+	
+	#1 op = `OP_AND; A = 32'h0000_1111; B = 32'h1010_0011;
+	#1 op = `OP_AND; A = 32'h0000_1111; B = 32'h1010_0011;
+	#1 op = `OP_AND; A = 32'h0000_1111; B = 32'h1010_0011;
+	#1 op = `OP_AND; A = 32'h0000_1111; B = 32'h1010_0011;
+	#1 op = `OP_AND; A = 32'h0000_1111; B = 32'h1010_0011;
+	
+    //#1 op = `OP_NOT; A = 32'hACED_CAFE; B = 32'hXXXX_XXXX;
+	#1 op = `OP_OR; A = 32'hFFFF_FFFF; B = 32'hFFFF_FFFF;
+	#1 op = `OP_OR; A = 32'h0000_0000; B = 32'h0000_0000;
+	#1 op = `OP_OR; A = 32'hFFFF_0000; B = 32'h0000_FFFF;
+	#1 op = `OP_OR; A = 32'h0000_7777; B = 32'h0000_0000;
+	#1 op = `OP_OR; A = 32'h0000_0001; B = 32'h0000_0001;
+	
+	#1 op = `OP_NEG; A = 32'hFFFF_FFFF;
+	#1 op = `OP_NEG; A = 32'h0000_0000;
+	#1 op = `OP_NEG; A = 32'h0000_5555;
+	#1 op = `OP_NEG; A = 32'hF0F0_F0F0;
+	#1 op = `OP_NEG; A = 32'h0F0F_0F0F;
+	
+	#1 op = `OP_ADD; A = 32'h8000_0000; B = 32'h8000_0000;
+    #1 op = `OP_ADD; A = 32'hFFFF_0000; B = 32'hFFFF_FFFF;
+    #1 op = `OP_ADD; A = 32'hFFFF_0000; B = 32'h0FFF_1111;
+    #1 op = `OP_ADD; A = 32'h7FFF_0000; B = 32'h7FFF_1111;
+    #1 op = `OP_ADD; A = 32'h7FFF_0000; B = 32'h0FFF_1111;
+	
+	#1 op = `OP_SUB; A = 32'hFFFF_FFFF; B = 32'h0000_0001;
+	#1 op = `OP_SUB; A = 32'hFFFF_FFFF; B = 32'hFFFF_FFFF;
+	#1 op = `OP_SUB; A = 32'h0000_FFFF; B = 32'h0000_FFFF;
+	#1 op = `OP_SUB; A = 32'h0505_0505; B = 32'h0505_0505;
+	#1 op = `OP_SUB; A = 32'h0000_0000; B = 32'h0000_0001;
+	
 	#1 op = `OP_NOP; A = 0; B = 0;
 	#1 op = `OP_HLT;
+	
+	
+	
+	//`OP_NOP
+			
+			//`OP_HLT
+			
+			//`OP_NOT
+			
+			//`OP_AND
+			
+			//`OP_OR
+			
+			//`OP_NEG
+
+			//`OP_ADD
+			
+			//`OP_SUB
+				
 
     #1 $finish;
   end
