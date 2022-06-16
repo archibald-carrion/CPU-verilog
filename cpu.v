@@ -12,17 +12,17 @@ iverilog alu.v cpu.v memoria.v registros.v cpu_tb.v
 
 `include "opcodes.vh"
 
-`define STAGE_FE_0 0
-`define STAGE_FE_1 1
-`define STAGE_DE_0 2
-`define STAGE_DE_1 3
-`define STAGE_EX_0 4
-`define STAGE_EX_1 5
-`define STAGE_MA_0 6
-`define STAGE_MA_1 7
-`define STAGE_WB_0 8
-`define STAGE_WB_1 9
-`define STAGE_HLT  10
+`define STAGE_FE_0 0	// fetch 0
+`define STAGE_FE_1 1	// fetch 1
+`define STAGE_DE_0 2	// decode 0
+`define STAGE_DE_1 3	// decode 1
+`define STAGE_EX_0 4	// execute 0
+`define STAGE_EX_1 5	// execute 1
+`define STAGE_MA_0 6	// memory access 0
+`define STAGE_MA_1 7	// memory access 1
+`define STAGE_WB_0 8	// write back 0
+`define STAGE_WB_1 9	// write back 1
+`define STAGE_HLT  10	// halt
 
 module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 	
