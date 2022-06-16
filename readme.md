@@ -24,7 +24,7 @@ The project contains the following files :
 - stages.gtkw
 - Whiteboard.png    (an illustration for better understanding of the problem)
 ## Project objectives :
-- [ ] Finish alu.v file
+- [x] Finish alu.v file
 - [ ] Finish alu_tb.v file
 - [ ] Finish cpu.v file
 - [ ] Finish cpu_tb.v file
