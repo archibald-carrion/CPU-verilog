@@ -28,7 +28,7 @@ module Register_tb;
 		// en 1 registor cabe 32bits, lo cual son 4 bytes, y por lo tanto 4 char
 		
 		//monitor instruction para saber por donde vamos en el arra
-		$monitor("\n_inputData : %b \n_dirrInput : %b \n_dirrOutput1 : %b \n_dirrOutput2 : %b \n_outputData1 : %b \n_outputData2 : %b \n_enableWrite : %b \n\n###############################################", _inputData, _dirrInput, _dirrOutput1, _dirrOutput2, _outputData1, _outputData2, _enableWrite);
+		$monitor("\n _inputData : %b \n _dirrInput : %b \n _dirrOutput1 : %b \n _dirrOutput2 : %b \n _outputData1 : %b \n _outputData2 : %b \n _enableWrite : %b \n\n################################################", _inputData, _dirrInput, _dirrOutput1, _dirrOutput2, _outputData1, _outputData2, _enableWrite);
 		
 		#1 _enableWrite = 'b1;
 		#1 _inputData = 'hACED_CAFE; _dirrInput = 'b000; //el underscore es un simbolo "ignorado" por el compilador
