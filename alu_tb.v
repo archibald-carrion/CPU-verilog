@@ -3,6 +3,7 @@ Universidad de Costa Rica
 CI-0114: Fundamentos de Arquitectura
 
 Prueba para la ALU
+iverilog alu.v alu_tb.v
 *********************************/
 
 `timescale 1us/100ns
@@ -17,7 +18,15 @@ module ALU_tb;
   initial begin
     $dumpfile("ALU.vcd");
     $dumpvars;
-    op = `OP_NOP; A = 0; B = 0;
+	$monitor("\opcode : % ", op);
+	
+	
+	
+    #1 op = `OP_NOP; A = 0; B = 0;
+	//aqui hay que poner todos las instruccioens de prueba
+	
+	
+	/*
     #1 op = `OP_ADD; A = 0; B = 0;
     #1 op = `OP_ADD; A = 32'h8000_0000; B = 32'h8000_0000;
     #1 op = `OP_ADD; A = 32'hFFFF_0000; B = 32'hFFFF_FFFF;
@@ -26,16 +35,11 @@ module ALU_tb;
     #1 op = `OP_ADD; A = 32'h7FFF_0000; B = 32'h0FFF_1111;
     #1 op = `OP_NOT; A = 32'hACED_CAFE; B = 32'hXXXX_XXXX;
     #1 op = `OP_NOT; A = R; B = 32'hXXXX_XXXX;
+	*/
     #1 $finish;
   end
   
-  ALU alu(.resultado(R),
-          .C(C),
-          .S(S),
-          .O(O),
-          .Z(Z),
-          .operando_a(A),
-          .operando_b(B),
-          .opcode(op));
+  ALU alu(.resultado(R), .C(C), .S(S), .O(O), .Z(Z), .operando_a(A), .operando_b(B), .opcode(op));
+		  
 
 endmodule

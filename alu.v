@@ -102,7 +102,7 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 				{C,resultado} = operando_a - operando_b;
 				S = resultado[BITS_DATA-1];
 				O = (operando_a[BITS_DATA-1] == operando_b[BITS_DATA-1]) && (operando_a[BITS_DATA-1] !=  resultado[BITS_DATA-1]);
-				z = ~(|resultado);
+				Z = ~(|resultado);
 			end
 			
 			//`OP_MUL: begin	//multiplication
