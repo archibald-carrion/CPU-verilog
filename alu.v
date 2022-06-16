@@ -1,11 +1,9 @@
-/*******************************
+/***********************************************************
 Universidad de Costa Rica
 CI-0114: Fundamentos de Arquitectura
 
-Modulo de una ALU combinacional,
-parcialmente implementada
-
-*********************************/
+Modulo de una ALU combinacional, completamente implementada
+************************************************************/
 
 `include "opcodes.vh"
 
@@ -30,16 +28,19 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 		//solo hay que hacer la parte de decodificacion de la instruccion, no hay que ejecutarla <- hay que verificar eso
 		case (opcode)
 			`OP_NOP: begin	//NO OPERATION
-			
-				C = 0;
-				S = 'bX;
-			
+				resultado = 'hXXXX_XXXX;
+				C = 'bx;
+				S = 'bx;
+				O = 'bx;
+				Z = 'bx;
 			end
 			
 			`OP_HLT: begin	//HALT
-				C = 0;
-				S = 'bX;
-			
+				resultado = 'hXXXX_XXXX;
+				C = 'bx;
+				S = 'bx;
+				O = 'bx;
+				Z = 'bx;
 			end
 			
 			//`OP_LD: begin 	//LOAD
@@ -59,14 +60,20 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 			end
 			
 			`OP_AND: begin	//AND gate
+				resultado = operando_a & operando_b;
 				C = 0;
 				S = resultado[BITS_DATA-1];
+				O = 0;
+				Z = ~(|resultado);
 			
 			end
 			
 			`OP_OR: begin	//OR gate
+				resultado = operando_a | operando_b;
 				C = 0;
 				S = resultado[BITS_DATA-1];
+				O =	0;
+				Z = ~(|resultado);
 			
 			end
 			
@@ -75,10 +82,11 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 			//end
 			
 			`OP_NEG: begin	//negation
-			
+				resultado = -operando_a;			
 				C = 0;
 				S = resultado[BITS_DATA-1];
-			
+				O = 0;
+				Z = ~(|resultado);
 			end
 
 			`OP_ADD: begin	//addition
@@ -91,11 +99,10 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 			end
 			
 			`OP_SUB: begin	//substraction
-				{C,resultado} = operando_a + operando_b;
+				{C,resultado} = operando_a - operando_b;
 				S = resultado[BITS_DATA-1];
 				O = (operando_a[BITS_DATA-1] == operando_b[BITS_DATA-1]) && (operando_a[BITS_DATA-1] !=  resultado[BITS_DATA-1]);
 				z = ~(|resultado);
-			
 			end
 			
 			//`OP_MUL: begin	//multiplication
