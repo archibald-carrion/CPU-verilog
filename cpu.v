@@ -127,7 +127,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 	
 	//se guarda los valores en los registros cuando es el negedge del reloj
 	always @(negedge clk) begin
-		//code
+		_dirrInput = IR[26:24]; _enableWrite=1;
 	end
 	
 	ALU alu(.resultado(R), .C(C), .S(S), .O(O), .Z(Z), .operando_a(operandoA), .operando_b(operandoB), .opcode(opcode));

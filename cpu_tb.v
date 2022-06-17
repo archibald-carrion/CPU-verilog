@@ -20,7 +20,7 @@ module Memoria_tb;
   end
  
   initial begin
-    $dumpfile("CPU_y_Memoria.vcd");
+    $dumpfile("cpu.vcd");
     $dumpvars;
     clk = 0; reset = 1;
     #1 reset = 0;
