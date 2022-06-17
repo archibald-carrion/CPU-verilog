@@ -94,8 +94,7 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 			`OP_ADD: begin	//addition
 				{C,resultado} = operando_a + operando_b;
 				S = resultado[BITS_DATA-1];
-				// Overflow es 1 cuando hay cambio en el bit de signo. Solo
-				// puedo ocurrir cuando los operandos tienen el mismo signo
+				// overflow = 1 si el resutlado no tiene el mismo bit de signo que los operandos base
 				O = (operando_a[BITS_DATA-1] == operando_b[BITS_DATA-1]) && (operando_a[BITS_DATA-1] !=  resultado[BITS_DATA-1]);
 				Z = ~(|resultado);
 			end

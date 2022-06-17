@@ -40,7 +40,6 @@ module Register_tb;
 		#1 _enableWrite = 'b0;
 		#1 _inputData = 'hFFFF_FFFF; _dirrInput = 'b111;
 		#1 _dirrOutput1 = 'b111;  _dirrOutput1 = 'b000;
-		//10101100111011011100101011111110
 		//clk = 1; escribir = 0;
 		//#1 dirr = 'b000; data_Input = 'hACED_CAFE; 
 		//direccion = 4; escribir = 1;
@@ -54,9 +53,6 @@ module Register_tb;
 	end
 	
 	registersArray registro(_inputData, _dirrInput, _dirrOutput1, _dirrOutput2, _outputData1, _outputData2, _enableWrite);
-	//registersArray registro(
-	//registersArray registro();
-	//Mem_D32b_A16b mem(.data_out(data_salida),.data_in(data_entrada),.address(direccion),.write(escribir),.clk(clk));
 endmodule
 
 

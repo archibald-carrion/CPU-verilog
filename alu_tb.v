@@ -69,26 +69,7 @@ module ALU_tb;
 	#1 op = `OP_NOP; A = 0; B = 0;
 	#1 op = `OP_HLT;
 	
-	
-	
-	//`OP_NOP
-			
-			//`OP_HLT
-			
-			//`OP_NOT
-			
-			//`OP_AND
-			
-			//`OP_OR
-			
-			//`OP_NEG
-
-			//`OP_ADD
-			
-			//`OP_SUB
-				
-
-    #1 $finish;
+	#1 $finish;
   end
   
   ALU alu(.resultado(R), .C(C), .S(S), .O(O), .Z(Z), .operando_a(A), .operando_b(B), .opcode(op));
