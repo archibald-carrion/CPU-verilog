@@ -7,7 +7,7 @@ Circuito simple de registro que permite almacenar 32 bits
 iverilog registros.v registros_tb.v
 *****************************/
 
-module registersArray(inputData, dirrInput, dirrOutput1, dirrOutput2, outputData1, outputData2, write_en);
+module registersArray(inputData, dirrInput, dirrOutput1, dirrOutput2, outputData1, outputData2, write_en, clk);
 	parameter BITS_DATA = 32;								//tamano de los registros
 	parameter BITS_ADDR = 3;								//tamano de las dirreciones
 	
@@ -16,10 +16,12 @@ module registersArray(inputData, dirrInput, dirrOutput1, dirrOutput2, outputData
 	input [BITS_ADDR-1:0] dirrOutput1;						//posicion del elemento que se quiere sacar de la lista de registros y se guarda en outputData1
 	input [BITS_ADDR-1:0] dirrOutput2;						//posicion del elemento que se quiere sacar de la lista de registros y se guarda en outputData2
 	input write_en;											// abreviado para "write enable", si esta en 1 permite cambiar el contenido de los registros, sino no puede
+	input clk;												//signal del reloj
 	output reg [BITS_DATA-1:0] outputData1;					//data sacado del array de registros
 	output reg [BITS_DATA-1:0] outputData2;					//data sacado del array de registros
 	
 	//"arreglo" de todos los registers de 32 bits
+	/*
 	reg [BITS_DATA-1:0] R0;
 	reg [BITS_DATA-1:0] R1;
 	reg [BITS_DATA-1:0] R2;
@@ -28,7 +30,24 @@ module registersArray(inputData, dirrInput, dirrOutput1, dirrOutput2, outputData
 	reg [BITS_DATA-1:0] R5;
 	reg [BITS_DATA-1:0] R6;
 	reg [BITS_DATA-1:0] R7;
+	*/
+	reg [BITS_DATA-1:0] registersArray [7:0];				// un array de 8 array de 32 bits
 	
+	always @(negedge clk) begin
+		if (write_en) begin
+		  registersArray[dirrInput] <= inputData;
+		end
+	end
+	
+	always @(posedge clk or dirrOutput1) begin
+		outputData1 <= registersArray[dirrOutput1];
+	end
+	
+	always @(posedge clk or dirrOutput2) begin
+		outputData2 <= registersArray[dirrOutput2];
+	end
+	
+	/*
 	//para agregar un elemento en el arreglo de registros
 	always @(dirrInput) begin
 		if(write_en) begin
@@ -154,4 +173,5 @@ module registersArray(inputData, dirrInput, dirrOutput1, dirrOutput2, outputData
 			end
 		endcase	
 	end	
+	*/
 endmodule

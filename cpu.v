@@ -61,6 +61,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 	
 	//se ejecuta la maquina de estado durante los posedge del reloj
 	always @(posedge clk or reset) begin
+		_enableWrite=0;
 		if (reset) begin
 			stage <= `STAGE_FE_0;
 			PC    <= 0;  // Podría definirse cualquier otra dirección como primer fetch

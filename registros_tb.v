@@ -52,7 +52,7 @@ module Register_tb;
 		//#6 $finish;
 	end
 	
-	registersArray registro(_inputData, _dirrInput, _dirrOutput1, _dirrOutput2, _outputData1, _outputData2, _enableWrite);
+	registersArray registro(_inputData, _dirrInput, _dirrOutput1, _dirrOutput2, _outputData1, _outputData2, _enableWrite, clk);
 endmodule
 
 
