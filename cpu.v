@@ -40,6 +40,9 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 	reg [BITS_DATA-1:0] IR;		//	--> instruction actual
 	reg [BITS_ADDR-1:0] PC;		//  --> adress of actual instruction
 	reg [4:0]           opcode;
+	reg [2:0]           dirReg;
+	reg [BITS_DATA-1:0] operandoA;
+	reg [BITS_DATA-1:0] operandoB;
  
 	reg [3:0] stage;
 	
@@ -51,27 +54,35 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 		end else begin
 			case (stage)
 				`STAGE_FE_0: begin
-				  stage <= `STAGE_FE_1;
-				  MAR   <= PC;
+					stage <= `STAGE_FE_1;
+					MAR   <= PC;
 				end
 
 				`STAGE_FE_1: begin
-				  stage <= `STAGE_DE_0;
-				  PC <= PC + 1;
-				  IR <= MBR_R;
+					stage <= `STAGE_DE_0;
+					PC <= PC + 1;
+					IR <= MBR_R;
 				end
 
 				`STAGE_DE_0: begin
-				  stage <= `STAGE_DE_1;
-				  opcode <= IR[31:27];
+					stage <= `STAGE_DE_1;
+					opcode <= IR[31:27];
+					opcode = IR[31:24];
+					dirReg = IR[26:24];
+					//DECODE 0
 				end
 
 				`STAGE_DE_1: begin
-				  stage <= `STAGE_EX_0;
+					stage <= `STAGE_EX_0;
+					
+					operandoA = IR[23:16];
+					operandoB = IR[15:0];
+					//DECODE 1
 				end
-
+				
 				`STAGE_EX_0: begin
 				  stage <= `STAGE_EX_1;
+				  //hay que "llamar" el alu con los operandos y el opcode dado
 				end
 
 				`STAGE_EX_1: begin
