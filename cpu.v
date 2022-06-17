@@ -39,10 +39,23 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
  
 	reg [BITS_DATA-1:0] IR;		//	--> instruction actual
 	reg [BITS_ADDR-1:0] PC;		//  --> adress of actual instruction
+	
+	//registros y wires para el ALU
 	reg [4:0]           opcode;
 	reg [2:0]           dirReg;
 	reg [BITS_DATA-1:0] operandoA;
 	reg [BITS_DATA-1:0] operandoB;
+	wire [31:0] R;
+	wire C, S, O, Z;
+	
+	//registros y wires para el array de registros
+	reg [31:0] _inputData;
+	reg [2:0] _dirrInput;
+	reg [2:0] _dirrOutput1;
+	reg [2:0] _dirrOutput2;
+	reg _enableWrite;
+	wire [31:0] _outputData1;
+	wire [31:0] _outputData2;
  
 	reg [3:0] stage;
 	
@@ -117,5 +130,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 		//code
 	end
 	
+	ALU alu(.resultado(R), .C(C), .S(S), .O(O), .Z(Z), .operando_a(operandoA), .operando_b(operandoB), .opcode(opcode));
+	registersArray registro(IR, _dirrInput, _dirrOutput1, _dirrOutput2, _outputData1, _outputData2, _enableWrite);
 	//ALU alu(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 endmodule
