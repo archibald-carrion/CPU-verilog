@@ -73,7 +73,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 
 				`STAGE_FE_1: begin
 					stage <= `STAGE_DE_0;
-					PC <= PC + 1;
+					PC <= PC + 1;				//se incrementa el PC para poder hacer fetch de la instruction siguiente en el proximo ciclo
 					IR <= MBR_R;
 				end
 
@@ -130,6 +130,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 		_dirrInput = IR[26:24]; _enableWrite=1;
 	end
 	
+	//$display("\n opcode : %b \n Output : %b \n C flag : %b \n S flag : %b \n O flag : %b \n Z flag : %b \n A Operand : %b \n B Operand : %b \n\n##############################################", opcode, R, C, S, O , Z, operandoA, operandoB);
 	ALU alu(.resultado(R), .C(C), .S(S), .O(O), .Z(Z), .operando_a(operandoA), .operando_b(operandoB), .opcode(opcode));
 	registersArray registro(IR, _dirrInput, _dirrOutput1, _dirrOutput2, _outputData1, _outputData2, _enableWrite);
 	//ALU alu(resultado, C, S, O, Z, operando_a, operando_b, opcode);
