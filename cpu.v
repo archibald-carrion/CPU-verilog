@@ -129,7 +129,4 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 	always @(negedge clk) begin
 		_dirrInput = IR[26:24]; _enableWrite=1;
 	end
-	
-	//ALU alu(.resultado(R), .C(C), .S(S), .O(O), .Z(Z), .operando_a(operandoA), .operando_b(operandoB), .opcode(opcode));
-	//registersArray registro(IR, _dirrInput, _dirrOutput1, _dirrOutput2, _outputData1, _outputData2, _enableWrite, clk);
 endmodule
