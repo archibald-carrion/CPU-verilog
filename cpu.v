@@ -83,14 +83,13 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 					//opcode <= IR[31:27];
 					opcode <= IR[31:24];
 					dirReg = IR[26:24];
+					operandoA = IR[23:16];
+					operandoB = IR[15:0];
 					//DECODE 0
 				end
 
 				`STAGE_DE_1: begin
-					stage <= `STAGE_EX_0;
-					
-					operandoA = IR[23:16];
-					operandoB = IR[15:0];
+					stage <= `STAGE_EX_0;					
 					//DECODE 1
 				end
 				
@@ -131,6 +130,6 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 		_dirrInput = IR[26:24]; _enableWrite=1;
 	end
 	
-	ALU alu(.resultado(R), .C(C), .S(S), .O(O), .Z(Z), .operando_a(operandoA), .operando_b(operandoB), .opcode(opcode));
-	registersArray registro(IR, _dirrInput, _dirrOutput1, _dirrOutput2, _outputData1, _outputData2, _enableWrite, clk);
+	//ALU alu(.resultado(R), .C(C), .S(S), .O(O), .Z(Z), .operando_a(operandoA), .operando_b(operandoB), .opcode(opcode));
+	//registersArray registro(IR, _dirrInput, _dirrOutput1, _dirrOutput2, _outputData1, _outputData2, _enableWrite, clk);
 endmodule
