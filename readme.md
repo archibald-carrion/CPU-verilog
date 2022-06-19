@@ -8,7 +8,7 @@
     * A word is 32bits
     * A dirrection is 16bits
 3. The circuit are not connected yet
-    Each independant circuit works correctly, yet they are not connected and therefore the CPU as a whole does not execute the given instructions
+    - Each independant circuit works correctly, yet they are not connected and therefore the CPU as a whole does not execute the given instructions
 
 ## Content of the project :
 The project contains the following files :
