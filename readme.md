@@ -9,6 +9,7 @@
     * A dirrection is 16bits
 3. The circuit are not connected yet
     - Each independant circuit works correctly, yet they are not connected and therefore the CPU as a whole does not execute the given instructions
+    - not all the needed instructions have been implanted, but the main arithmetic and logical ones are already functional
 
 ## Content of the project :
 The project contains the following files :
