@@ -33,7 +33,7 @@ The project contains the following files :
 - [x] Finish memoria.v file
 - [x] Finish memoria_tb.v file
 - [x] Finish layout and comment code
-- [x] Connect the circuits together
+- [ ] Connect the circuits together
 - [ ] Add a pipeline system (optional)
 - [ ] Implementation of the readmemh and writememh function (optional)
 ## Compilation & test running commands :
