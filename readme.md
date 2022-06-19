@@ -26,13 +26,14 @@ The project contains the following files :
 ## Project objectives :
 - [x] Finish alu.v file
 - [x] Finish alu_tb.v file
-- [ ] Finish cpu.v file
-- [ ] Finish cpu_tb.v file
+- [x] Finish cpu.v file
+- [x] Finish cpu_tb.v file
 - [x] Finish registros.v file
 - [x] Finish registros_tb.v file
 - [x] Finish memoria.v file
 - [x] Finish memoria_tb.v file
-- [ ] Finish layout and comment of the code
+- [x] Finish layout and comment code
+- [x] Connect the circuits together
 - [ ] Add a pipeline system (optional)
 - [ ] Implementation of the readmemh and writememh function (optional)
 ## Compilation & test running commands :
