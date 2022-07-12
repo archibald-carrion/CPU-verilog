@@ -106,9 +106,12 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 				Z = ~(|resultado);
 			end
 			
-			//`OP_MUL: begin	//multiplication
-			
-			//end
+			`OP_MUL: begin	//multiplication
+				resultado = operando_a * operando_b;
+				S = resultado[BITS_DATA-1];
+				//O = el signo es positivo si ambos operandos tiene el mismo signo, y negativo si distintos. Si esto no sucede, hay overflow?
+				Z = ~(|resultado);
+			end
 			
 			//`OP_DIV: begin	//division
 			
