@@ -21,6 +21,8 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 	input [BITS_DATA-1:0] operando_a;
 	input [BITS_DATA-1:0] operando_b;
 	input [4:0] opcode;
+	
+	wire [15:0] bus_address;
   
 	  // Con el @*, estamos definiendo un bloque combinacional
 	  // ya que no depende de ningún reloj
@@ -110,6 +112,37 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 				resultado = operando_a * operando_b;
 				S = resultado[BITS_DATA-1];
 				//O = el signo es positivo si ambos operandos tiene el mismo signo, y negativo si distintos. Si esto no sucede, hay overflow?
+				Z = ~(|resultado);
+			end
+			
+			`OP_LD: begin
+				
+				//resultado =   
+				//wire [15:0] bus_address;
+				bus_address = resultado[15:1];
+				Mem_D32b_A16b mem(resultado, 						// output de la memoria
+								resultado,   						// input de la memoria
+								bus_address,						// address de memoria de la celda que se quiere leer
+								0,									// write = 0, ya que queremos leer la memoria y no guardar nada
+								1);									// clk en 1, ya que la escritura se ejecuta en clk = 0
+				C = 0;
+				S = resultado[BITS_DATA-1];
+				O = 0;
+				Z = ~(|resultado);
+			
+			end
+			
+			`OP_STR: begin
+				//wire [15:0] bus_address;
+				bus_address = resultado[15:1];
+				Mem_D32b_A16b mem(resultado, 						// output de la memoria
+								resultado,   						// input de la memoria
+								bus_address,						// address de memoria de la celda que se quiere leer
+								1,									// write = 0, ya que queremos leer la memoria y no guardar nada
+								0);									// clk en 1, ya que la escritura se ejecuta en clk = 0
+				C = 0;
+				S = resultado[BITS_DATA-1];
+				O = 0;
 				Z = ~(|resultado);
 			end
 			
