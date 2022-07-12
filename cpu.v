@@ -59,6 +59,13 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
  
 	reg [3:0] stage;
 	
+	
+	output reg [BITS_DATA-1:0] resultado;
+	output reg C;
+	output reg S;
+	output reg O;
+	output reg Z;
+	
 	//se ejecuta la maquina de estado durante los posedge del reloj
 	always @(posedge clk or reset) begin
 		_enableWrite=0;
@@ -95,6 +102,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 				
 				`STAGE_EX_0: begin
 				  stage <= `STAGE_EX_1;
+				  ALU alu(resultado, C, S, O, Z, operandoA, operandoB, opcode);
 				  //hay que "llamar" el alu con los operandos y el opcode dado
 				end
 
