@@ -119,6 +119,7 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 				
 				//resultado =   
 				//wire [15:0] bus_address;
+				resultado = operando_a;
 				bus_address = resultado[15:1];
 				Mem_D32b_A16b mem(resultado, 						// output de la memoria
 								resultado,   						// input de la memoria
@@ -134,6 +135,7 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 			
 			`OP_STR: begin
 				//wire [15:0] bus_address;
+				resultado = operando_a;
 				bus_address = resultado[15:1];
 				Mem_D32b_A16b mem(resultado, 						// output de la memoria
 								resultado,   						// input de la memoria
