@@ -10,6 +10,13 @@ Ancho de palabra (Datos) 32 bits, ancho de direcciones 16 bits (64Ki Words)
 iverilog alu.v cpu.v memoria.v registros.v cpu_tb.v
 *********************************/
 
+
+// iverilog ejemplo_and_or.v ejemplo_and_or_tb.v
+// vvp a.out
+// gtkwave ejemplo_and_or.vcd
+
+
+
 `include "opcodes.vh"
 
 `define STAGE_FE_0 0	// fetch 0
@@ -45,14 +52,17 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 	reg [2:0]           dirReg;
 	reg [BITS_DATA-1:0] operandoA;
 	reg [BITS_DATA-1:0] operandoB;
+	reg [2:0] dst;
+	reg [2:0] src;
+
 	wire [31:0] R;
-	wire C, S, O, Z;
+	//output wire C, S, O, Z;
 	
 	//registros y wires para el array de registros
 	reg [31:0] _inputData;
-	reg [2:0] _dirrInput;
-	reg [2:0] _dirrOutput1;
-	reg [2:0] _dirrOutput2;
+	//reg [2:0] _dirrInput;
+	//reg [2:0] _dirrOutput1;
+	//reg [2:0] _dirrOutput2;
 	reg _enableWrite;
 	wire [31:0] _outputData1;
 	wire [31:0] _outputData2;
@@ -60,11 +70,11 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 	reg [3:0] stage;
 	
 	
-	output reg [BITS_DATA-1:0] resultado;
-	output reg C;
-	output reg S;
-	output reg O;
-	output reg Z;
+	reg [BITS_DATA-1:0] resultado;
+	reg C;
+	reg S;
+	reg O;
+	reg Z;
 	
 	//se ejecuta la maquina de estado durante los posedge del reloj
 	always @(posedge clk or reset) begin
@@ -90,8 +100,11 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 					//opcode <= IR[31:27];
 					opcode <= IR[31:24];
 					dirReg = IR[26:24];
-					operandoA = IR[23:16];
-					operandoB = IR[15:0];
+					operandoA = IR[23:19];
+					dst = IR[18:16];
+					operandoB = IR[15:3];
+					src = IR[2:0];
+
 					//DECODE 0
 				end
 
@@ -101,13 +114,49 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 				end
 				
 				`STAGE_EX_0: begin
-				  stage <= `STAGE_EX_1;
-				  ALU alu(resultado, C, S, O, Z, operandoA, operandoB, opcode);
-				  //hay que "llamar" el alu con los operandos y el opcode dado
+					if(opcode>=16 && opcode<=25) begin
+				  		//ALU alu(resultado, C, S, O, Z, operandoA, operandoB, opcode);
+						stage <= `STAGE_MA_0;
+					end 
+					else begin
+						stage <= `STAGE_EX_1;
+					end
 				end
 
 				`STAGE_EX_1: begin
-				  stage <= `STAGE_MA_0;
+				  	stage <= `STAGE_MA_0;
+
+					case(opcode)
+						`OP_LD: begin		//READ
+							//resultado = operando_a;
+
+							//bus_address = resultado[15:1];
+							/*
+							Mem_D32b_A16b mem(operando_a, 						// output de la memoria
+									operando_a,   						// input de la memoria
+									dst,						// address de memoria de la celda que se quiere leer
+									0,									// write = 0, ya que queremos leer la memoria y no guardar nada
+									clk);									// clk en 1, ya que la escritura se ejecuta en clk = 0	
+									*/
+							//solo se puede		
+						end
+
+						`OP_STR: begin
+							///resultado = operando_a;
+
+							//bus_address = resultado[15:1];
+							/*
+							Mem_D32b_A16b mem(operando_a, 						// output de la memoria
+									operando_a,   						// input de la memoria
+									dst,						// address de memoria de la celda que se quiere leer
+									1,									// write = 0, ya que queremos leer la memoria y no guardar nada
+									clk);									// clk en 1, ya que la escritura se ejecuta en clk = 0
+								*/
+						end
+
+						default: begin
+						end
+					endcase
 				end
 
 				`STAGE_MA_0: begin
@@ -132,9 +181,18 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 			endcase
 		end
 	end
+
+
+	//ALU alu(resultado, C, S, O, Z, operandoA, operandoB, opcode);
+
+	//ALU alu(.resultado(resultado), .C(C), .S(S), .O(O), .Z(Z), .operando_a(operandoA), .operando_b(operandoB), .opcode(opcode));
 	
-	//se guarda los valores en los registros cuando es el negedge del reloj
-	always @(negedge clk) begin
-		_dirrInput = IR[26:24]; _enableWrite=1;
-	end
+/*
+	Mem_D32b_A16b mem(operando_a, 						// output de la memoria
+									0,   						// input de la memoria
+									dst,						// address de memoria de la celda que se quiere leer
+									1,									// write = 0, ya que queremos leer la memoria y no guardar nada
+									0);									// clk en 1, ya que la escritura se ejecuta en clk = 0
+									
+*/
 endmodule
