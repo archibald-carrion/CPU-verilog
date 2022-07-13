@@ -2,29 +2,27 @@
 ###################################_HARDCODED__VERSION_###################################
 ##########################################################################################
 
-0000	|	load 12											// max value						--> stored in r0		--> hardcoded value
-0001	|	load 0 											// used to str results				--> stored in r1
-0002	|	load 0											// used to str temporary results	--> stored in r2
-0003	|	load 1											// counter							--> stored in r3
-0004	|	multiply r1 and r3, store result in r2
-0005	|	str r2 in r1
-0006	|	r3 = r3 + 1
-0007	|	jump to 00004 if counter == r0 
-0008	|	end program
+0000	|	load 12+1											// max value						--> stored in r0		--> hardcoded value
+0001	|	load 1											// used to str results				--> stored in r1
+0002	|	load 0											// counter							--> stored in r3
+0003	|	multiply r1 and r3, store result in r1
+0004	|	r3 = r3 + 1
+0005	|	jump to 00003 if counter == r0 
+0006    |   store r1 en 0x1000
+0007	|	end program
 
 ##########################################################################################
 ###################################_SOFTCODED__VERSION_###################################
 ##########################################################################################
 
-0000	|	load content of memory cell 65535				// max value						--> stored in r0		--> softcoded value
-0001	|	load 0 											// used to str results				--> stored in r1
-0002	|	load 0											// used to str temporary results	--> stored in r2
-0003	|	load 1											// counter							--> stored in r3
-0004	|	multiply r1 and r3, store result in r2
-0005	|	str r2 in r1
-0006	|	r3 = r3 + 1
-0007	|	jump to 00004 if counter == r0 
-0008	|	end program
+0000	|	load (content of memory cell 65535)+1			// max value						--> stored in r0		--> softcoded value
+0001	|	load 1											// used to str results				--> stored in r1
+0002	|	load 0											// counter							--> stored in r3
+0003	|	multiply r1 and r3, store result in r1
+0004	|	r3 = r3 + 1
+0005	|	jump to 00003 if counter == r0 
+0006    |   store r1 en 0x1000
+0007	|	end program
 
 ðððððððððððððððððððððððððððððððððððððððððð.NOTE.ðððððððððððððððððððððððððððððððððððððððððð 
 For the softcoded function to work we need to previously store in memory the number of 
