@@ -8,7 +8,7 @@
 0003	|	multiply r1 and r3, store result in r1
 0004	|	r3 = r3 + 1
 0005	|	jump to 00003 if counter == r0 
-0006    |   store r1 en 0x1000
+0006    |   store r1 en 0x8000
 0007	|	end program
 
 ##########################################################################################
@@ -21,7 +21,7 @@
 0003	|	multiply r1 and r3, store result in r1
 0004	|	r3 = r3 + 1
 0005	|	jump to 00003 if counter == r0 
-0006    |   store r1 en 0x1000
+0006    |   store r1 en 0x8000
 0007	|	end program
 
 ðððððððððððððððððððððððððððððððððððððððððð.NOTE.ðððððððððððððððððððððððððððððððððððððððððð 

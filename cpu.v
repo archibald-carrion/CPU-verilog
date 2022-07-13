@@ -98,7 +98,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 				`STAGE_DE_0: begin
 					stage <= `STAGE_DE_1;
 					//opcode <= IR[31:27];
-					opcode <= IR[31:24];
+					opcode <= IR[31:27];
 					dirReg = IR[26:24];
 					operandoA = IR[23:19];
 					dst = IR[18:16];
@@ -115,8 +115,8 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 				
 				`STAGE_EX_0: begin
 					if(opcode>=16 && opcode<=25) begin
-				  		//ALU alu(resultado, C, S, O, Z, operandoA, operandoB, opcode);
-						stage <= `STAGE_MA_0;
+				  		ALU alu(resultado, C, S, O, Z, operandoA, operandoB, opcode);
+						stage <= `STAGE_WB_0;
 					end 
 					else begin
 						stage <= `STAGE_EX_1;
@@ -124,51 +124,59 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 				end
 
 				`STAGE_EX_1: begin
-				  	stage <= `STAGE_MA_0;
-
+				  	
 					case(opcode)
-						`OP_LD: begin		//READ
-							//resultado = operando_a;
-
-							//bus_address = resultado[15:1];
-							/*
-							Mem_D32b_A16b mem(operando_a, 						// output de la memoria
-									operando_a,   						// input de la memoria
-									dst,						// address de memoria de la celda que se quiere leer
-									0,									// write = 0, ya que queremos leer la memoria y no guardar nada
-									clk);									// clk en 1, ya que la escritura se ejecuta en clk = 0	
-									*/
-							//solo se puede		
+						`OP_LD: begin
+							stage <= `STAGE_MA_0;
 						end
 
 						`OP_STR: begin
-							///resultado = operando_a;
-
-							//bus_address = resultado[15:1];
-							/*
-							Mem_D32b_A16b mem(operando_a, 						// output de la memoria
-									operando_a,   						// input de la memoria
-									dst,						// address de memoria de la celda que se quiere leer
-									1,									// write = 0, ya que queremos leer la memoria y no guardar nada
-									clk);									// clk en 1, ya que la escritura se ejecuta en clk = 0
-								*/
+							stage <= `STAGE_MA_1;
 						end
 
 						default: begin
+							stage <= `STAGE_HLT;
 						end
-					endcase
+
 				end
 
-				`STAGE_MA_0: begin
-				  stage <= `STAGE_MA_1;
+				`STAGE_MA_0: begin	//LOAD
+					
+				  	stage <= `STAGE_WB_0;
+					Mem_D32b_A16b mem(resultado, 						// output de la memoria
+									resultado,   						// input de la memoria
+									dirReg,						// address de memoria de la celda que se quiere leer
+									0,									// write = 0, ya que queremos leer la memoria y no guardar nada
+									clk);									// clk en 1, ya que la escritura se ejecuta en clk = 0	
+
+					//hay que guardarlo en registros
+									
 				end
 
-				`STAGE_MA_1: begin
-				  stage <= `STAGE_WB_0;
+				`STAGE_MA_1: begin	//STORE
+					
+				  	stage <= `STAGE_WB_1;
+					Mem_D32b_A16b mem(operandoA, 						// output de la memoria
+						operandoA,   						// input de la memoria
+						dirReg,						// address de memoria de la celda que se quiere leer
+						1,									// write = 0, ya que queremos leer la memoria y no guardar nada
+						~clk);									// clk en 1, ya que la escritura se ejecuta en clk = 0
+
+					//aqui se guarda en la memoria
+							
 				end
 
 				`STAGE_WB_0: begin
 					stage <= `STAGE_WB_1;
+					//aqui se guarda en los registros
+					registersArray registros(.inputData(resultado), 
+											 .dirrInput(dirReg), 
+											 .dirrOutput1(dst), 
+											 .dirrOutput2(src), 
+											 .outputData1(operandoA), 
+											 .outputData2(operandoB), 
+											 .write_en(1), 
+											 .clk(clk));
 				end
 
 				`STAGE_WB_1: begin
@@ -182,17 +190,4 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 		end
 	end
 
-
-	//ALU alu(resultado, C, S, O, Z, operandoA, operandoB, opcode);
-
-	//ALU alu(.resultado(resultado), .C(C), .S(S), .O(O), .Z(Z), .operando_a(operandoA), .operando_b(operandoB), .opcode(opcode));
-	
-/*
-	Mem_D32b_A16b mem(operando_a, 						// output de la memoria
-									0,   						// input de la memoria
-									dst,						// address de memoria de la celda que se quiere leer
-									1,									// write = 0, ya que queremos leer la memoria y no guardar nada
-									0);									// clk en 1, ya que la escritura se ejecuta en clk = 0
-									
-*/
 endmodule
