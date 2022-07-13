@@ -1,0 +1,33 @@
+##########################################################################################
+###################################_HARDCODED__VERSION_###################################
+##########################################################################################
+
+0000	|	load 12											// max value						--> stored in r0		--> hardcoded value
+0001	|	load 0 											// used to str results				--> stored in r1
+0002	|	load 0											// used to str temporary results	--> stored in r2
+0003	|	load 1											// counter							--> stored in r3
+0004	|	multiply r1 and r3, store result in r2
+0005	|	str r2 in r1
+0006	|	r3 = r3 + 1
+0007	|	jump to 00004 if counter == r0 
+0008	|	end program
+
+##########################################################################################
+###################################_SOFTCODED__VERSION_###################################
+##########################################################################################
+
+0000	|	load content of memory cell 65535				// max value						--> stored in r0		--> softcoded value
+0001	|	load 0 											// used to str results				--> stored in r1
+0002	|	load 0											// used to str temporary results	--> stored in r2
+0003	|	load 1											// counter							--> stored in r3
+0004	|	multiply r1 and r3, store result in r2
+0005	|	str r2 in r1
+0006	|	r3 = r3 + 1
+0007	|	jump to 00004 if counter == r0 
+0008	|	end program
+
+ðððððððððððððððððððððððððððððððððððððððððð.NOTE.ðððððððððððððððððððððððððððððððððððððððððð 
+For the softcoded function to work we need to previously store in memory the number of 
+wich we want to calcute the factorial
+data[65535] = 'hABC		--> with ABC the number in hexadecimal
+2**16-1 = 65535			-->last memory cell of the main memory
