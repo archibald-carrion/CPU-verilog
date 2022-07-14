@@ -77,7 +77,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
   reg [12:0] saltoIntruccion;
 
 	reg [3:0] stage;
-
+  reg [4:0] opcodeReduced;
 	//reg C;
 	//reg S;
 	//reg O;
@@ -105,6 +105,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 				`STAGE_DE_0: begin
 					stage <= `STAGE_DE_1;
           opcode <= IR[31:24];
+          opcodeReduced <= IR[31:27];
 
           // Decode para la Alu
 					operandoA = IR[23:16];
@@ -133,7 +134,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 					stage <= `STAGE_EX_0;
           // Si desea realizar un load de registro a registro
           // o es un store o un salto
-          if (opcode == 10 || opcode == 2 || opcode == 209)	begin
+          if (opcodeReduced == 10 || opcodeReduced == 2 || opcode == 209)	begin
             // Lea el valor en ese registro
             writeRegistros = 0;
           end			
@@ -142,7 +143,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 				
 				`STAGE_EX_0: begin
           // Si es una operacion de la ALU
-					if(opcode>=16 && opcode<=25) begin
+					if(opcodeReduced>=16 && opcodeReduced<=25) begin
             // Guarde el resultado en un buffer
             resultadoReg = resultado;
             // Vaya directo a Write-Back (WB)
@@ -164,7 +165,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 
 				`STAGE_EX_1: begin
           // Si es un Load Directo o un store (usa memoria)
-          if(opcode==2 || opcode==11) begin
+          if(opcodeReduced==2 || opcodeReduced==11) begin
             // Vaya a memory access (MA)
             stage <= `STAGE_MA_0;
 					end 
@@ -209,7 +210,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 				`STAGE_MA_0: begin	
 				  stage <= `STAGE_MA_1;
           // Si estamos haciendo un store
-          if (opcode == 2) begin
+          if (opcodeReduced == 2) begin
             // Guardamos el valor de registros que queremos
             // escribir en memoria
             salidaRegistrosReg01 = salidaRegistros;
@@ -227,7 +228,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 
 				`STAGE_MA_1: begin	
           // Si estamos haciendo un store
-          if (opcode == 2) begin
+          if (opcodeReduced == 2) begin
             // Cambiamos el valor de escritura
             entradaMemoria = salidaRegistrosReg01;
             MBR_W = salidaRegistrosReg01;
@@ -280,7 +281,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 		end
 	end
 
-ALU alu(resultado, C, S, O, Z, operandoA, operandoB, opcode[7:3]);
+ALU alu(resultado, C, S, O, Z, operandoA, operandoB, opcodeReduced);
 
 /*
 Mem_D32b_A16b mem(salidaMemoria, 					   	// output de la memoria
