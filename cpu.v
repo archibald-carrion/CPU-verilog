@@ -219,6 +219,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
           else begin
             // Deshabilitamos escritura
             writeMemoria = 0;
+            write =0; //    <== se usa los reg y wires que entran y salen del cpu en vez de tener la meoria adentro del cpu
           end
 				end
 
@@ -278,12 +279,13 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 
 ALU alu(resultado, C, S, O, Z, operandoA, operandoB, opcode[7:3]);
 
+/*
 Mem_D32b_A16b mem(salidaMemoria, 					   	// output de la memoria
 						entradaMemoria,   						    // input de la memoria
 						addressMemoria,						        // address de memoria de la celda que se quiere leer
 						writeMemoria,									    // write = 0, ya que queremos leer la memoria y no guardar nada
 						clk);									            // clk en 1, ya que la escritura se ejecuta en clk = 0
-
+*/
 registersArray registros(.inputData(entradaRegistros), 
 											 .dirrInput(addressRegistrosEscritura), 
 											 .dirrOutput1(addressRegistrosLectura), 
