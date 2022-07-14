@@ -13,6 +13,7 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 	parameter BITS_DATA = 32;
 
 	output reg [BITS_DATA-1:0] resultado;
+  reg [63:0] resultado64;
 	output reg C;
 	output reg S;
 	output reg O;
@@ -109,9 +110,10 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 			end
 			
 			`OP_MUL: begin	//multiplication
-				resultado = operando_a * operando_b;
-				S = resultado[BITS_DATA-1];
-				//O = el signo es positivo si ambos operandos tiene el mismo signo, y negativo si distintos. Si esto no sucede, hay overflow?
+        resultado64 = operando_a * operando_b;
+        resultado = resultado64[31:0];
+				S = resultado[BITS_DATA-1:0];
+        O = |resultado64[63:32];
 				Z = ~(|resultado);
 			end
 			

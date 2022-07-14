@@ -48,41 +48,40 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 	reg [BITS_ADDR-1:0] PC;		//  --> adress of actual instruction
 	
 	//registros y wires para el ALU
-	reg [4:0]           opcode;
-	reg [2:0]           dirReg;
+	reg [7:0]           opcode;
 	reg [BITS_DATA-1:0] operandoA;
 	reg [BITS_DATA-1:0] operandoB;
 	reg [2:0] dst;
 	reg [2:0] src;
-
-	wire [31:0] R;
-	//output wire C, S, O, Z;
+  wire[BITS_DATA-1:0] resultado;
+  reg [BITS_DATA-1:0] resultadoReg;
+	output wire C, S, O, Z;
 	
+  //registros y wires para memoria
+  wire [BITS_DATA-1:0] salidaMemoria;
+  reg [BITS_DATA-1:0] entradaMemoria;
+  reg writeMemoria;
+
 	//registros y wires para el array de registros
-	reg [31:0] _inputData;
-	//reg [2:0] _dirrInput;
-	//reg [2:0] _dirrOutput1;
-	//reg [2:0] _dirrOutput2;
-	reg _enableWrite;
-	wire [31:0] _outputData1;
-	wire [31:0] _outputData2;
+  wire [BITS_DATA-1:0] salidaRegistros;
+  reg [BITS_DATA-1:0] entradaRegistros;
+  reg [2:0] addressRegistros;
+  reg writeRegistros;
  
 	reg [3:0] stage;
-	
-	
-	reg [BITS_DATA-1:0] resultado;
-	reg C;
-	reg S;
-	reg O;
-	reg Z;
+
+	//reg C;
+	//reg S;
+	//reg O;
+	//reg Z;
 	
 	//se ejecuta la maquina de estado durante los posedge del reloj
 	always @(posedge clk or reset) begin
-		_enableWrite=0;
 		if (reset) begin
 			stage <= `STAGE_FE_0;
 			PC    <= 0;  // Podría definirse cualquier otra dirección como primer fetch
-		end else begin
+		end 
+    else begin
 			case (stage)
 				`STAGE_FE_0: begin
 					stage <= `STAGE_FE_1;
@@ -97,35 +96,53 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 
 				`STAGE_DE_0: begin
 					stage <= `STAGE_DE_1;
-					//opcode <= IR[31:27];
-					opcode <= IR[31:27];
-					dirReg = IR[26:24];
-					operandoA = IR[23:19];
-					dst = IR[18:16];
-					operandoB = IR[15:3];
-					src = IR[2:0];
+          opcode <= IR[31:24];
+
+          // Decode para la Alu
+					operandoA = IR[23:16];
+					operandoB = IR[15:0];
+
+          // Decode de uso general
+          dst = IR[18:16];
+          src = IR[2:0];
+
+          // Decode para load INM
+          entradaRegistros = IR[15:0];
+
+          // Decode para Load Reg
+          addressRegistros = IR[15:0];
 
 					//DECODE 0
 				end
 
 				`STAGE_DE_1: begin
-					stage <= `STAGE_EX_0;					
+					stage <= `STAGE_EX_0;
+          // Si desea realizar un load de registro a registro
+          if (opcode == 10)	begin
+            writeRegistros = 0;
+          end			
 					//DECODE 1
 				end
 				
 				`STAGE_EX_0: begin
 					if(opcode>=16 && opcode<=25) begin
-				  		ALU alu(resultado, C, S, O, Z, operandoA, operandoB, opcode);
-						stage <= `STAGE_WB_0;
+            resultadoReg = resultado;
+            stage <= `STAGE_WB_0;
 					end 
-					else begin
-						stage <= `STAGE_EX_1;
-					end
+          else begin
+            stage <= `STAGE_EX_1;
+          end
 				end
 
 				`STAGE_EX_1: begin
-				  	
-					case(opcode)
+          if(opcode==2 || opcode==11) begin
+            stage <= `STAGE_MA_0;
+					end 
+          else begin
+            stage <= `STAGE_WB_0;
+          end
+
+					/*case(opcode)
 						`OP_LD: begin
 							stage <= `STAGE_MA_0;
 						end
@@ -136,47 +153,20 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 
 						default: begin
 							stage <= `STAGE_HLT;
-						end
+						end*/
 
 				end
 
-				`STAGE_MA_0: begin	//LOAD
-					
-				  	stage <= `STAGE_WB_0;
-					Mem_D32b_A16b mem(resultado, 						// output de la memoria
-									resultado,   						// input de la memoria
-									dirReg,						// address de memoria de la celda que se quiere leer
-									0,									// write = 0, ya que queremos leer la memoria y no guardar nada
-									clk);									// clk en 1, ya que la escritura se ejecuta en clk = 0	
-
-					//hay que guardarlo en registros
-									
+				`STAGE_MA_0: begin	
+				  stage <= `STAGE_MA_1;
 				end
 
-				`STAGE_MA_1: begin	//STORE
-					
-				  	stage <= `STAGE_WB_1;
-					Mem_D32b_A16b mem(operandoA, 						// output de la memoria
-						operandoA,   						// input de la memoria
-						dirReg,						// address de memoria de la celda que se quiere leer
-						1,									// write = 0, ya que queremos leer la memoria y no guardar nada
-						~clk);									// clk en 1, ya que la escritura se ejecuta en clk = 0
-
-					//aqui se guarda en la memoria
-							
+				`STAGE_MA_1: begin	
+				  stage <= `STAGE_WB_0;
 				end
 
 				`STAGE_WB_0: begin
 					stage <= `STAGE_WB_1;
-					//aqui se guarda en los registros
-					registersArray registros(.inputData(resultado), 
-											 .dirrInput(dirReg), 
-											 .dirrOutput1(dst), 
-											 .dirrOutput2(src), 
-											 .outputData1(operandoA), 
-											 .outputData2(operandoB), 
-											 .write_en(1), 
-											 .clk(clk));
 				end
 
 				`STAGE_WB_1: begin
@@ -189,5 +179,22 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 			endcase
 		end
 	end
+
+ALU alu(resultado, C, S, O, Z, operandoA, operandoB, opcode[7:3]);
+
+Mem_D32b_A16b mem(salidaMemoria, 					   	// output de la memoria
+						entradaMemoria,   						    // input de la memoria
+						MAR,						                  // address de memoria de la celda que se quiere leer
+						writeMemoria,									    // write = 0, ya que queremos leer la memoria y no guardar nada
+						clk);									            // clk en 1, ya que la escritura se ejecuta en clk = 0
+
+registersArray registros(.inputData(entradaRegistros), 
+											 .dirrInput(addressRegistros), 
+											 .dirrOutput1(addressRegistros), 
+											 .dirrOutput2(addressRegistros), 
+											 .outputData1(salidaRegistros), 
+											 .outputData2(salidaRegistros), 
+											 .write_en(writeRegistros), 
+											 .clk(clk));
 
 endmodule
