@@ -59,13 +59,17 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 	
   //registros y wires para memoria
   wire [BITS_DATA-1:0] salidaMemoria;
+  reg [BITS_DATA-1:0] salidaMemoriaReg;
   reg [BITS_DATA-1:0] entradaMemoria;
+  reg [BITS_ADDR-1:0] addressMemoria;
   reg writeMemoria;
 
 	//registros y wires para el array de registros
   wire [BITS_DATA-1:0] salidaRegistros;
+  reg [BITS_DATA-1:0] salidaRegistrosReg;
   reg [BITS_DATA-1:0] entradaRegistros;
-  reg [2:0] addressRegistros;
+  reg [2:0] addressRegistrosLectura;
+  reg [2:0] addressRegistrosEscritura;
   reg writeRegistros;
  
 	reg [3:0] stage;
@@ -108,9 +112,12 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 
           // Decode para load INM
           entradaRegistros = IR[15:0];
-
           // Decode para Load Reg
-          addressRegistros = IR[15:0];
+          addressRegistrosLectura = IR[2:0];
+          // Load directo
+          addressMemoria = IR[15:0];
+
+          addressRegistrosEscritura = IR[18:16];
 
 					//DECODE 0
 				end
@@ -118,15 +125,20 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 				`STAGE_DE_1: begin
 					stage <= `STAGE_EX_0;
           // Si desea realizar un load de registro a registro
-          if (opcode == 10)	begin
+          // o es un store
+          if (opcode == 10 || opcode == 2)	begin
+            // Lea el valor en ese registro
             writeRegistros = 0;
           end			
 					//DECODE 1
 				end
 				
 				`STAGE_EX_0: begin
+          // Si es una operacion de la ALU
 					if(opcode>=16 && opcode<=25) begin
+            // Guarde el resultado en un buffer
             resultadoReg = resultado;
+            // Vaya directo a Write-Back (WB)
             stage <= `STAGE_WB_0;
 					end 
           else begin
@@ -135,7 +147,9 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 				end
 
 				`STAGE_EX_1: begin
+          // Si es un Load Directo o un store (usa memoria)
           if(opcode==2 || opcode==11) begin
+            // Vaya a memory access (MA)
             stage <= `STAGE_MA_0;
 					end 
           else begin
@@ -159,13 +173,48 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 
 				`STAGE_MA_0: begin	
 				  stage <= `STAGE_MA_1;
+          // Si estamos haciendo un store
+          if (opcode == 2) begin
+            // Guardamos el valor de registros que queremos
+            // escribir en memoria
+            salidaRegistrosReg = salidaRegistros;
+            // Habilitamos escritura
+            writeMemoria = 1;
+          end
+          // Si estamos haciendo un Load directo
+          else begin
+            // Deshabilitamos escritura
+            writeMemoria = 0;
+          end
 				end
 
 				`STAGE_MA_1: begin	
-				  stage <= `STAGE_WB_0;
+          // Si estamos haciendo un store
+          if (opcode == 2) begin
+            // Cambiamos el valor de escritura
+            entradaMemoria = salidaRegistrosReg;
+            // Ya has terminado tu funcion
+            stage <= `STAGE_FE_0;
+          end
+          // Si estamos haciendo un Load directo
+          else begin
+            // Guardamos el valor de la memoria
+            salidaMemoriaReg = salidaMemoria;
+            // Continuar con escritura en registros
+            stage <= `STAGE_WB_0;
+          end
+
 				end
 
 				`STAGE_WB_0: begin
+          // Operacion de Alu
+          // Load Inmediato 
+          // Load reg
+          // Load directo
+
+          case (opcode)
+          
+          endcase;
 					stage <= `STAGE_WB_1;
 				end
 
@@ -184,14 +233,14 @@ ALU alu(resultado, C, S, O, Z, operandoA, operandoB, opcode[7:3]);
 
 Mem_D32b_A16b mem(salidaMemoria, 					   	// output de la memoria
 						entradaMemoria,   						    // input de la memoria
-						MAR,						                  // address de memoria de la celda que se quiere leer
+						addressMemoria,						        // address de memoria de la celda que se quiere leer
 						writeMemoria,									    // write = 0, ya que queremos leer la memoria y no guardar nada
 						clk);									            // clk en 1, ya que la escritura se ejecuta en clk = 0
 
 registersArray registros(.inputData(entradaRegistros), 
-											 .dirrInput(addressRegistros), 
-											 .dirrOutput1(addressRegistros), 
-											 .dirrOutput2(addressRegistros), 
+											 .dirrInput(addressRegistrosEscritura), 
+											 .dirrOutput1(addressRegistrosLectura), 
+											 .dirrOutput2(addressRegistrosLectura), 
 											 .outputData1(salidaRegistros), 
 											 .outputData2(salidaRegistros), 
 											 .write_en(writeRegistros), 
