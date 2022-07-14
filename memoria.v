@@ -42,11 +42,12 @@ module Mem_D32b_A16b(data_out, data_in, address, write, clk);
   // De momento, los datos se inicializan manualmente
   initial begin    
     //data[0] = 'h00000000;
-	//data[0] = 'hFFFFFFFF; //el estado HLT funciona correctamente
-	data[0] = 'h0000FFFF;
+	  //data[0] = 'hFFFFFFFF; //el estado HLT funciona correctamente
+	  data[0] = 'h0000FFFF;
+    //00001001 xxxxx000
     data[1] = 'h01005555;
     data[2] = 'h33331111;
-	data[3] = 'hFFFFFFFF;
+	  data[3] = 'hFFFFFFFF;
     //data[3] = 'h00000000;
     //data[4] = 'h00000000;
     //data[5] = 'hF8000000;
