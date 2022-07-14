@@ -66,12 +66,16 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 
 	//registros y wires para el array de registros
   wire [BITS_DATA-1:0] salidaRegistros;
-  reg [BITS_DATA-1:0] salidaRegistrosReg;
+  reg [BITS_DATA-1:0] salidaRegistrosReg01;
+  reg [BITS_DATA-1:0] salidaRegistrosReg02;
   reg [BITS_DATA-1:0] entradaRegistros;
   reg [2:0] addressRegistrosLectura;
   reg [2:0] addressRegistrosEscritura;
   reg writeRegistros;
  
+  // registros y wires para el JUMP
+  reg [12:0] saltoIntruccion;
+
 	reg [3:0] stage;
 
 	//reg C;
@@ -119,14 +123,17 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 
           addressRegistrosEscritura = IR[18:16];
 
+          // Decode para JUMP
+          saltoIntruccion = IR[15:3];
+
 					//DECODE 0
 				end
 
 				`STAGE_DE_1: begin
 					stage <= `STAGE_EX_0;
           // Si desea realizar un load de registro a registro
-          // o es un store
-          if (opcode == 10 || opcode == 2)	begin
+          // o es un store o un salto
+          if (opcode == 10 || opcode == 2 || opcode == 209)	begin
             // Lea el valor en ese registro
             writeRegistros = 0;
           end			
@@ -142,6 +149,15 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
             stage <= `STAGE_WB_0;
 					end 
           else begin
+            // Si la instruccion es un salto
+            if (opcode == 209) begin
+              // guarde el primer valor para comparar
+              salidaRegistrosReg01 = salidaRegistros;
+
+              // Lea el otro valor
+              addressRegistrosLectura = dst;
+              writeRegistros = 0;
+            end
             stage <= `STAGE_EX_1;
           end
 				end
@@ -152,8 +168,26 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
             // Vaya a memory access (MA)
             stage <= `STAGE_MA_0;
 					end 
+          
           else begin
-            stage <= `STAGE_WB_0;
+            // Si la instruccion es un salto
+            if (opcode == 209) begin
+              // guarde el segundo valor para comparar
+              salidaRegistrosReg02 = salidaRegistros;
+              
+              // Si la condicion de salto se cumple
+              if (salidaRegistrosReg01 != salidaRegistrosReg02) begin
+                // Cambie la instruccion siguiente a la indicada
+                PC = saltoIntruccion;
+              end
+              // Vuelva al fetch
+              stage <= `STAGE_FE_0;
+            end
+
+            // Si la instruccion es un Load INM o un Load Reg
+            else begin
+              stage <= `STAGE_WB_0;
+            end
           end
 
 					/*case(opcode)
@@ -177,7 +211,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
           if (opcode == 2) begin
             // Guardamos el valor de registros que queremos
             // escribir en memoria
-            salidaRegistrosReg = salidaRegistros;
+            salidaRegistrosReg01 = salidaRegistros;
             // Habilitamos escritura
             writeMemoria = 1;
           end
@@ -192,7 +226,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
           // Si estamos haciendo un store
           if (opcode == 2) begin
             // Cambiamos el valor de escritura
-            entradaMemoria = salidaRegistrosReg;
+            entradaMemoria = salidaRegistrosReg01;
             // Ya has terminado tu funcion
             stage <= `STAGE_FE_0;
           end
@@ -213,9 +247,9 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
             end
             `OPD_LD_REG: begin
               // Guardamos el valor del registro src
-              salidaRegistrosReg = salidaRegistros;
+              salidaRegistrosReg01 = salidaRegistros;
               // Cambiamos el valor de escritura al valor de src
-              entradaRegistros = salidaRegistrosReg;
+              entradaRegistros = salidaRegistrosReg01;
             end
             `OPD_LD_DIRECT: begin
               // Cambiamos el valor de escritura al valor de la memoria
