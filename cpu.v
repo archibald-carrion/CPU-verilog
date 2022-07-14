@@ -207,19 +207,32 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 				end
 
 				`STAGE_WB_0: begin
-          // Operacion de Alu
-          // Load Inmediato 
-          // Load reg
-          // Load directo
-
+          stage <= `STAGE_WB_1;
           case (opcode)
-          
+            `OPD_LD_INM: begin
+            end
+            `OPD_LD_REG: begin
+              // Guardamos el valor del registro src
+              salidaRegistrosReg = salidaRegistros;
+              // Cambiamos el valor de escritura al valor de src
+              entradaRegistros = salidaRegistrosReg;
+            end
+            `OPD_LD_DIRECT: begin
+              // Cambiamos el valor de escritura al valor de la memoria
+              entradaRegistros = salidaMemoriaReg;
+            end
+            // Casos de opcode para Alu
+            default: begin
+              // Cambiamos el valor de escritura al valor obtenido de la Alu
+              entradaRegistros = resultadoReg;
+            end
           endcase;
-					stage <= `STAGE_WB_1;
 				end
 
 				`STAGE_WB_1: begin
-					stage <= `STAGE_FE_0;
+          stage <= `STAGE_FE_0;
+          // Escribimos el valor en los registros
+          writeRegistros = 1;
 				end
 
 				default: begin
