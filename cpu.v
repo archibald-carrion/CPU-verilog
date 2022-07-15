@@ -118,7 +118,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
           addressRegistrosLectura <= IR[2:0];
           // Load directo
           //addressMemoria <= IR[15:0];
-          MAR <= IR[15:0];
+          //MAR <= IR[15:0];
           addressRegistrosEscritura <= IR[18:16];
 
           // Decode para JUMP
@@ -183,7 +183,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
               if (salidaRegistrosReg01 != salidaRegistrosReg02) begin
                 // Cambie la instruccion siguiente a la indicada
                 PC <= saltoIntruccion;
-                MAR <= saltoIntruccion;
+                //MAR <= saltoIntruccion;
               end
               // Vuelva al fetch
               stage <= `STAGE_FE_0;
