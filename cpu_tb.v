@@ -39,4 +39,9 @@ module Memoria_tb;
                     .address(bus_de_direcciones),
                     .write(bit_de_control_escritura),
                     .clk(clk));
+
+  
 endmodule
+
+
+

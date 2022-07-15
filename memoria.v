@@ -42,14 +42,38 @@ module Mem_D32b_A16b(data_out, data_in, address, write, clk);
   // De momento, los datos se inicializan manualmente
   initial begin    
     //data[0] = 'h00000000;
-	//data[0] = 'hFFFFFFFF; //el estado HLT funciona correctamente
-	data[0] = 'h0000FFFF;
-    data[1] = 'h01005555;
-    data[2] = 'h33331111;
-	data[3] = 'hFFFFFFFF;
+	  //data[0] = 'hFFFFFFFF; //el estado HLT funciona correctamente
+	  //data[0] = 'h0000FFFF;
+    //00001001 xxxxx000
+    //data[1] = 'h01005555;
+    //data[2] = 'h33331111;
+	  //data[3] = 'hFFFFFFFF;
     //data[3] = 'h00000000;
     //data[4] = 'h00000000;
     //data[5] = 'hF8000000;
+data[0] = 'b00001_000_00000000_0000000000001100;
+data[1] = 'b00001_001_00000000_0000000000000001;
+data[2] = 'b00001_010_00000000_0000000000000001;
+data[3] = 'b00001_011_00000000_0000000000000001;
+data[4] = 'b10111_000_00000001_0000000000000010;
+data[5] = 'b10101_000_00000010_0000000000000011;
+data[6] = 'b11010_000_00000000_1111101000000001;
+data[7] = 'b00010_000_00000001_0001111101000000;
+data[8] = 'b00000_000_00000000_0000000000000000;
+    /*
+
+00001_000_00000000_0000000000001100		--> 12 en r0
+00001_001_00000000_0000000000000001		--> 1 en r1
+00001_010_00000000_0000000000000001		--> 1 en r2
+00001_011_00000000_0000000000000001		--> 1 en r3	(const)
+10111_000_00000001_0000000000000010		--> multiplicar r1 y r2, guardar resultado en r1
+10101_000_00000010_0000000000000011		--> add 1 to r2
+11010_000_00000000_1111101000000001		-->salta a 0X8000 si r0 (000) == r1 (001)
+00010_000_00000001_0001111101000000		--> se guarda el contenido de r1 en 0X8000
+00000_000_00000000_0000000000000000
+
+
+    */
   end
   
   // Workaround para lograr visualizar la memoria en gtkwave
