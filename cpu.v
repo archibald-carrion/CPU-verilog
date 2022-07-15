@@ -194,21 +194,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
               stage <= `STAGE_WB_0;
             end
           end
-
-					/*case(opcode)
-						`OP_LD: begin
-							stage <= `STAGE_MA_0;
-						end
-
-						`OP_STR: begin
-							stage <= `STAGE_MA_1;
-						end
-
-						default: begin
-							stage <= `STAGE_HLT;
-						end*/
-
-				end
+        end
 
         //############################################################################################
 
@@ -260,6 +246,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
             `OPD_LD_INM: begin
               // se guarda en un registro el contenido de una celda de memoria de la cual 
               // tenemos el address
+              entradaRegistros <= operandoB;
             end
             `OPD_LD_REG: begin
               salidaRegistrosReg01 <= salidaRegistros;  // Guardamos el valor del registro src
@@ -269,7 +256,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
               // Cambiamos el valor de escritura al valor de la memoria
               //entradaRegistros <= salidaMemoriaReg;
               //entradaRegistros <= MBR_R;
-              entradaRegistros <= operandoB;
+              //entradaRegistros <= operandoB;
             end
             // Casos de opcode para Alu
             default: begin
