@@ -133,7 +133,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 					stage <= `STAGE_EX_0;
           // Si desea realizar un load de registro a registro
           // o es un store o un salto
-          if (opcodeReduced == 10 || opcodeReduced == 2 || opcode == 209)	begin
+          if (opcodeReduced == 1 || opcodeReduced == 2 || opcode == 209)	begin
             // Lea el valor en ese registro
             writeRegistros = 0;
           end			
@@ -143,21 +143,16 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
         //############################################################################################
 				
 				`STAGE_EX_0: begin
-          // Si es una operacion de la ALU
-					if(opcodeReduced>=16 && opcodeReduced<=25) begin
-            // Guarde el resultado en un buffer
-            resultadoReg <= resultado;
-            // Vaya directo a Write-Back (WB)
-            stage <= `STAGE_WB_0;
+					if(opcodeReduced>=16 && opcodeReduced<=25) begin      // Si es una operacion de la ALU
+            resultadoReg <= resultado;                          // Guarde el resultado en un buffer
+            stage <= `STAGE_WB_0;                               // Vaya directo a Write-Back (WB)
 					end 
           else begin
-            // Si la instruccion es un salto
-            if (opcode == 209) begin
-              // guarde el primer valor para comparar
-              salidaRegistrosReg01 <= salidaRegistros;
-
-              // Lea el otro valor
-              addressRegistrosLectura <= dst;
+            
+            if (opcode == 209) begin                            // Si la instruccion es un salto
+             
+              salidaRegistrosReg01 <= salidaRegistros;          // guarde el primer valor para comparar
+              addressRegistrosLectura <= dst;                   // Lea el otro valor
               writeRegistros <= 0;
             end
             stage <= `STAGE_EX_1;
@@ -172,25 +167,16 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
             // Vaya a memory access (MA)
             stage <= `STAGE_MA_0;
 					end 
-          
           else begin
-            // Si la instruccion es un salto
-            if (opcode == 209) begin
-              // guarde el segundo valor para comparar
-              salidaRegistrosReg02 <= salidaRegistros;
-              
-              // Si la condicion de salto se cumple
-              if (salidaRegistrosReg01 != salidaRegistrosReg02) begin
-                // Cambie la instruccion siguiente a la indicada
-                PC <= saltoIntruccion;
+            if (opcode == 209) begin                                      // Si la instruccion es un salto
+              salidaRegistrosReg02 <= salidaRegistros;                    // guarde el segundo valor para comparar
+              if (salidaRegistrosReg01 != salidaRegistrosReg02) begin     // Si la condicion de salto se cumple
+                PC <= saltoIntruccion;                                    // Cambie la instruccion siguiente a la indicada
                 //MAR <= saltoIntruccion;
               end
-              // Vuelva al fetch
-              stage <= `STAGE_FE_0;
+              stage <= `STAGE_FE_0;                                       // Vuelva al fetch
             end
-
-            // Si la instruccion es un Load INM o un Load Reg
-            else begin
+            else begin                                                    // Si la instruccion es un Load INM o un Load Reg
               stage <= `STAGE_WB_0;
             end
           end
@@ -200,20 +186,16 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 
 				`STAGE_MA_0: begin	
 				  stage <= `STAGE_MA_1;
-          // Si estamos haciendo un store
-          if (opcodeReduced == 2) begin
-            // Guardamos el valor de registros que queremos
-            // escribir en memoria
-            salidaRegistrosReg01 <= salidaRegistros;
+          if (opcodeReduced == 2) begin               // Si estamos haciendo un store
+            salidaRegistrosReg01 <= salidaRegistros;  // se guarda en un register el valor que hay que guardar en memoria
             // Habilitamos escritura
             //writeMemoria = 1;
             write <= 1;
           end
           // Si estamos haciendo un Load directo
           else begin
-            // Deshabilitamos escritura
             //writeMemoria = 0;
-            write <= 0; //    <== se usa los reg y wires que entran y salen del cpu en vez de tener la meoria adentro del cpu
+            write <= 0;                               // se deshabilita escritura
           end
 				end
 
