@@ -238,7 +238,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
           if (opcodeReduced == 2) begin
             // Cambiamos el valor de escritura
             //entradaMemoria = salidaRegistrosReg01;
-            MBR_W <= salidaRegistrosReg01;
+            MBR_W <= salidaRegistrosReg01;    //se guarda en data_in de memoria el valor del registro 
             // Ya has terminado tu funcion
             stage <= `STAGE_FE_0;
           end
