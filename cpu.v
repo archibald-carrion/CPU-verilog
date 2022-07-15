@@ -108,21 +108,21 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
           opcodeReduced <= IR[31:27];
 
           // Decode para la Alu
-					operandoA = IR[23:16];
-					operandoB = IR[15:0];
+					operandoA <= IR[23:16];
+					operandoB <= IR[15:0];
 
           // Decode de uso general
-          dst = IR[18:16];
-          src = IR[2:0];
+          dst <= IR[18:16];
+          src <= IR[2:0];
 
           // Decode para load INM
-          entradaRegistros = IR[15:0];
+          entradaRegistros <= IR[15:0];
           // Decode para Load Reg
-          addressRegistrosLectura = IR[2:0];
+          addressRegistrosLectura <= IR[2:0];
           // Load directo
-          addressMemoria = IR[15:0];
-
-          addressRegistrosEscritura = IR[18:16];
+          //addressMemoria <= IR[15:0];
+          MAR <= IR[15:0];
+          addressRegistrosEscritura <= IR[18:16];
 
           // Decode para JUMP
           saltoIntruccion = IR[15:3];
@@ -179,8 +179,8 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
               // Si la condicion de salto se cumple
               if (salidaRegistrosReg01 != salidaRegistrosReg02) begin
                 // Cambie la instruccion siguiente a la indicada
-                PC = saltoIntruccion;
-                MAR = saltoIntruccion;
+                PC <= saltoIntruccion;
+                MAR <= saltoIntruccion;
               end
               // Vuelva al fetch
               stage <= `STAGE_FE_0;
@@ -215,14 +215,14 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
             // escribir en memoria
             salidaRegistrosReg01 = salidaRegistros;
             // Habilitamos escritura
-            writeMemoria = 1;
-            write = 1;
+            //writeMemoria = 1;
+            write <= 1;
           end
           // Si estamos haciendo un Load directo
           else begin
             // Deshabilitamos escritura
-            writeMemoria = 0;
-            write = 0; //    <== se usa los reg y wires que entran y salen del cpu en vez de tener la meoria adentro del cpu
+            //writeMemoria = 0;
+            write <= 0; //    <== se usa los reg y wires que entran y salen del cpu en vez de tener la meoria adentro del cpu
           end
 				end
 
