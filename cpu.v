@@ -70,7 +70,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
   reg [15:0] direccionMemoria;
 
   // registros y wires para el JUMP
-  reg[15:0] instruccionCompleta;
+  reg[15:0] nuevaDirrecion;
   reg [12:0] saltoIntruccion;
 	
 	//se ejecuta la maquina de estado durante los posedge del reloj
@@ -78,7 +78,6 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 		if (reset) begin
 			stage <= `STAGE_FE_0;
 			PC    <= 0;                          // Podría definirse cualquier otra dirección como primer fetch
-      instruccionCompleta <= 0;
 		end 
     else begin
 			case (stage)
@@ -145,7 +144,8 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
             operandoB <= salidaRegistros02;                     // Para la operacion
 					end 
           else if (opcode == 209) begin                         // Si es un Jump
-            instruccionCompleta <= direccionMemoria;            // Agreguele 000 al inicio de la direccion dado que no existian suficientes bits en la instruccion
+            nuevaDirrecion <= 0;                                // Agreguele 000 al inicio de la direccion dado que no existian suficientes bits en la instruccion
+            nuevaDirrecion[12:0] <= saltoIntruccion;            // Actualice el resto de la instrucción
             salidaRegistrosReg01 <= salidaRegistros01;          // Guarde las salidas de los registros
             salidaRegistrosReg02 <= salidaRegistros02;          // Para su comparación
           end
@@ -164,7 +164,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
           else begin                                                    // De lo contrario (no interactua con la memoria)
             if (opcode == 209) begin                                    // Si la instruccion es un Jump
               if (salidaRegistrosReg01 != salidaRegistrosReg02) begin   // Si los dos registros ingresados en la instruccion no tienen el mismo valor
-                PC <= instruccionCompleta;                              // Cambie la instruccion siguiente a la indicada
+                PC <= nuevaDirrecion;                              // Cambie la instruccion siguiente a la indicada
               end
               stage <= `STAGE_FE_0;                                     // Vaya directo al Fetch de la siguiente instruccion
             end
