@@ -86,6 +86,8 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 
 				`STAGE_FE_0: begin
 					stage <= `STAGE_FE_1;
+          writeRegistros <= 0;
+          write <= 0;
 					MAR   <= PC;
 				end
 
