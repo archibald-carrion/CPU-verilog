@@ -42,6 +42,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 	reg [BITS_ADDR-1:0] PC;		//  --> adress of actual instruction
 	reg [3:0] stage;
   reg [4:0] opcodeReduced;
+  reg [BITS_DATA-1:0] bigRegister; //registro usado para almacenar temporalmente cantidad grandes de bits
 
 	// registers & wires para el ALU
 	reg [7:0] opcode;
@@ -121,6 +122,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 
 				`STAGE_DE_1: begin
 					stage <= `STAGE_EX_0;
+          if(opcode == 19 || opcode == 209) begin
             writeRegistros <= 0;  // no se puede modificar el contenido de los registros cuando se hace un store o un jump
           end			
           else begin
