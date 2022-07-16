@@ -24,25 +24,27 @@ iverilog alu.v cpu.v memoria.v registros.v cpu_tb.v
 `define STAGE_HLT  10	// halt
 
 
-
 module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 	
 	parameter BITS_DATA = 32;
 	parameter BITS_ADDR = 16;
 
+  // input & ouput del CPU
 	output reg [BITS_DATA-1:0] MBR_W;
 	output reg [BITS_ADDR-1:0] MAR;
-	output reg                 write;
-  
+	output reg write;
 	input  [BITS_DATA-1:0] MBR_R;
-	input                  reset;
-	input                  clk;
+	input reset;
+	input clk;
  
+  // registers & wires para el CPU
 	reg [BITS_DATA-1:0] IR;		//	--> instruction actual
 	reg [BITS_ADDR-1:0] PC;		//  --> adress of actual instruction
-	
-	//registros y wires para el ALU
-	reg [7:0]           opcode;
+	reg [3:0] stage;
+  reg [4:0] opcodeReduced;
+
+	// registers & wires para el ALU
+	reg [7:0] opcode;
 	reg [BITS_DATA-1:0] operandoA;
 	reg [BITS_DATA-1:0] operandoB;
 	reg [2:0] dst;
@@ -51,14 +53,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
   reg [BITS_DATA-1:0] resultadoReg;
 	output wire C, S, O, Z;
 	
-  //registros y wires para memoria
-  wire [BITS_DATA-1:0] salidaMemoria;
-  reg [BITS_DATA-1:0] salidaMemoriaReg;
-  reg [BITS_DATA-1:0] entradaMemoria;
-  reg [BITS_ADDR-1:0] addressMemoria;
-  reg writeMemoria;
-
-	//registros y wires para el array de registros
+  // registers & wires para el array de registros
   wire [BITS_DATA-1:0] salidaRegistros;
   reg [BITS_DATA-1:0] salidaRegistrosReg01;
   reg [BITS_DATA-1:0] salidaRegistrosReg02;
@@ -70,8 +65,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
   // registros y wires para el JUMP
   reg [12:0] saltoIntruccion;
 
-	reg [3:0] stage;
-  reg [4:0] opcodeReduced;
+	
 	
 	//se ejecuta la maquina de estado durante los posedge del reloj
 	always @(posedge clk or reset) begin
@@ -101,43 +95,36 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 
 				`STAGE_DE_0: begin
 					stage <= `STAGE_DE_1;
+          
+          // Decode de uso general
           opcode <= IR[31:24];
           opcodeReduced <= IR[31:27];
+          dst <= IR[18:16];
+          src <= IR[2:0];
 
           // Decode para la Alu
 					operandoA <= IR[23:16];
 					operandoB <= IR[15:0];
 
-          // Decode de uso general
-          dst <= IR[18:16];
-          src <= IR[2:0];
-
           // Decode para load INM
           entradaRegistros <= IR[15:0];
+
           // Decode para Load Reg
           addressRegistrosLectura <= IR[2:0];
-          // Load directo
-          //addressMemoria <= IR[15:0];
-          //MAR <= IR[15:0];
           addressRegistrosEscritura <= IR[18:16];
 
           // Decode para JUMP
-          saltoIntruccion = IR[15:3];
-
-					//DECODE 0
-				end
+          saltoIntruccion <= IR[15:0];  // address de memoria hacia la cual hay que saltar
+        end
 
         //############################################################################################
 
 				`STAGE_DE_1: begin
 					stage <= `STAGE_EX_0;
-          // Si desea realizar un load de registro a registro
-          // o es un store o un salto
-          if (opcodeReduced == 1 || opcodeReduced == 2 || opcode == 209)	begin
-            // Lea el valor en ese registro
-            writeRegistros = 0;
+          // si occurre un load desde memoria, o un load de registro a registro
+          if (opcodeReduced == 1 || opcode == 10)	begin
+            writeRegistros <= 0;  //lea el valor en ese registro
           end			
-					//DECODE 1
 				end
 
         //############################################################################################
