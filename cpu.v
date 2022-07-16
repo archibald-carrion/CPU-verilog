@@ -121,12 +121,10 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 
 				`STAGE_DE_1: begin
 					stage <= `STAGE_EX_0;
-          // no se modifica el contenido de los registros cuando se hace un store o un jump, en todos los otros casos se puede modificar el contenido de los registros
-          if (opcode == 209 || opcode == 2)	begin
-            writeRegistros <= 0;
+            writeRegistros <= 0;  // no se puede modificar el contenido de los registros cuando se hace un store o un jump
           end			
           else begin
-            writeRegistros <= 1;
+            writeRegistros <= 1;  // se puede modificar el contenido de los registros en todos los otros casos
           end
 				end
 
