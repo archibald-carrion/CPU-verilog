@@ -121,10 +121,13 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 
 				`STAGE_DE_1: begin
 					stage <= `STAGE_EX_0;
-          // si occurre un load desde memoria, o un load de registro a registro
-          if (opcodeReduced == 1 || opcode == 10)	begin
-            writeRegistros <= 0;  //lea el valor en ese registro
+          // no se modifica el contenido de los registros cuando se hace un store o un jump, en todos los otros casos se puede modificar el contenido de los registros
+          if (opcode == 209 || opcode == 2)	begin
+            writeRegistros <= 0;
           end			
+          else begin
+            writeRegistros <= 1;
+          end
 				end
 
         //############################################################################################
