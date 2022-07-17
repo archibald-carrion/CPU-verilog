@@ -10,15 +10,7 @@ Ancho de palabra (Datos) 32 bits, ancho de direcciones 16 bits (64Ki Words)
 iverilog alu.v cpu.v memoria.v registros.v cpu_tb.v
 *********************************/
 
-
-// iverilog ejemplo_and_or.v ejemplo_and_or_tb.v
-// vvp a.out
-// gtkwave ejemplo_and_or.vcd
-
-
-
 `include "opcodes.vh"
-
 `define STAGE_FE_0 0	// fetch 0
 `define STAGE_FE_1 1	// fetch 1
 `define STAGE_DE_0 2	// decode 0
@@ -31,271 +23,219 @@ iverilog alu.v cpu.v memoria.v registros.v cpu_tb.v
 `define STAGE_WB_1 9	// write back 1
 `define STAGE_HLT  10	// halt
 
+
 module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
 	
 	parameter BITS_DATA = 32;
 	parameter BITS_ADDR = 16;
 
+  // input & ouput del CPU
 	output reg [BITS_DATA-1:0] MBR_W;
 	output reg [BITS_ADDR-1:0] MAR;
-	output reg                 write;
-  
+	output reg write;
 	input  [BITS_DATA-1:0] MBR_R;
-	input                  reset;
-	input                  clk;
+	input reset;
+	input clk;
  
+  // registers & wires para el CPU
 	reg [BITS_DATA-1:0] IR;		//	--> instruction actual
 	reg [BITS_ADDR-1:0] PC;		//  --> adress of actual instruction
-	
-	//registros y wires para el ALU
-	reg [7:0]           opcode;
+	reg [3:0] stage;
+  reg [4:0] opcodeReduced;
+
+	// registers & wires para el ALU
+	reg [7:0] opcode;
 	reg [BITS_DATA-1:0] operandoA;
 	reg [BITS_DATA-1:0] operandoB;
-	reg [2:0] dst;
-	reg [2:0] src;
   wire[BITS_DATA-1:0] resultado;
   reg [BITS_DATA-1:0] resultadoReg;
 	output wire C, S, O, Z;
 	
-  //registros y wires para memoria
-  wire [BITS_DATA-1:0] salidaMemoria;
-  reg [BITS_DATA-1:0] salidaMemoriaReg;
-  reg [BITS_DATA-1:0] entradaMemoria;
-  reg [BITS_ADDR-1:0] addressMemoria;
-  reg writeMemoria;
-
-	//registros y wires para el array de registros
-  wire [BITS_DATA-1:0] salidaRegistros;
+  // registers & wires para el array de registros
+  wire [BITS_DATA-1:0] salidaRegistros01;
+  wire [BITS_DATA-1:0] salidaRegistros02;
   reg [BITS_DATA-1:0] salidaRegistrosReg01;
   reg [BITS_DATA-1:0] salidaRegistrosReg02;
   reg [BITS_DATA-1:0] entradaRegistros;
-  reg [2:0] addressRegistrosLectura;
+  reg [2:0] addressRegistrosLectura01;
+  reg [2:0] addressRegistrosLectura02;
   reg [2:0] addressRegistrosEscritura;
   reg writeRegistros;
  
-  // registros y wires para el JUMP
-  reg [12:0] saltoIntruccion;
+  // registros y wires para el Load INM
+  reg [BITS_ADDR-1:0] valorInmediato;
 
-	reg [3:0] stage;
-  reg [4:0] opcodeReduced;
-	//reg C;
-	//reg S;
-	//reg O;
-	//reg Z;
+  // registros y wires para el Store directo
+  // No utiliza BITS_ADDR porque es dependiente de la instruccion
+  reg [15:0] direccionMemoria;
+
+  // registros y wires para el JUMP
+  reg[15:0] nuevaDirrecion;
+  reg [12:0] saltoIntruccion;
 	
 	//se ejecuta la maquina de estado durante los posedge del reloj
 	always @(posedge clk or reset) begin
 		if (reset) begin
 			stage <= `STAGE_FE_0;
-			PC    <= 0;  // Podría definirse cualquier otra dirección como primer fetch
+			PC    <= 0;                          // Podría definirse cualquier otra dirección como primer fetch
 		end 
     else begin
 			case (stage)
+
+        //############################################################################################
+
 				`STAGE_FE_0: begin
 					stage <= `STAGE_FE_1;
+          writeRegistros <= 0;
+          write <= 0;
 					MAR   <= PC;
 				end
 
+        //############################################################################################
+
 				`STAGE_FE_1: begin
 					stage <= `STAGE_DE_0;
-					PC <= PC + 1;				//se incrementa el PC para poder hacer fetch de la instruction siguiente en el proximo ciclo
+					PC <= PC + 1;				                               // Se incrementa PC para hacer fetch de la instruction siguiente en el proximo ciclo
 					IR <= MBR_R;
 				end
 
+        //############################################################################################
+
 				`STAGE_DE_0: begin
 					stage <= `STAGE_DE_1;
-          opcode <= IR[31:24];
-          opcodeReduced <= IR[31:27];
-
-          // Decode para la Alu
-					operandoA = IR[23:16];
-					operandoB = IR[15:0];
-
+          
           // Decode de uso general
-          dst = IR[18:16];
-          src = IR[2:0];
+          opcode <= IR[31:24];                               // Opcode con dir (Load inmediato, Store directo, Jump)
+          opcodeReduced <= IR[31:27];                        // Opcode sin dir (Operaciones de la ALU)
+
+          // Decode para Load INM u operaciones de la ALU
+          addressRegistrosEscritura <= IR[18:16];            // Address al registro donde se va a escribir (dst)
 
           // Decode para load INM
-          entradaRegistros = IR[15:0];
-          // Decode para Load Reg
-          addressRegistrosLectura = IR[2:0];
-          // Load directo
-          addressMemoria = IR[15:0];
+          valorInmediato <= IR[15:0];                        // Valor inmediato a escribir se encuentra en los ultimos 15 bits
 
-          addressRegistrosEscritura = IR[18:16];
+          // Decode para Lectura de registros (operaciones de ALU, Jump y Store directo)
+          addressRegistrosLectura01 <= IR[18:16];            // Address hacia el operando A (ALU), al primer registro para comparar (Jump) o al registro para copiar a memoria (Store)
+          addressRegistrosLectura02 <= IR[2:0];              // Address hacia el operando B (ALU) o al segundo registro para comparar (Jump)
+
+          // Decode para Store directo
+          direccionMemoria <= IR[15:0];                      // Address hacia la direccion de memoria en la que se quiere escribir
 
           // Decode para JUMP
-          saltoIntruccion = IR[15:3];
+          saltoIntruccion <= IR[15:3];                       // Address de memoria hacia la cual hay que saltar
+        end
 
-					//DECODE 0
-				end
+        //############################################################################################
 
 				`STAGE_DE_1: begin
 					stage <= `STAGE_EX_0;
-          // Si desea realizar un load de registro a registro
-          // o es un store o un salto
-          if (opcodeReduced == 10 || opcodeReduced == 2 || opcode == 209)	begin
-            // Lea el valor en ese registro
-            writeRegistros = 0;
-          end			
-					//DECODE 1
+          if(opcode == 19) begin                                                         // Si es un Store directo
+            writeRegistros <= 0;                                                         // leer el contenido de un registro
+          end
+          else if ((opcodeReduced>=16 && opcodeReduced<=25) || opcode == 209) begin      // Si es una operacion de ALU o un Jump
+            writeRegistros <= 0;                                                         // leer el contenido de dos registros
+          end
 				end
+
+        //############################################################################################
 				
 				`STAGE_EX_0: begin
-          // Si es una operacion de la ALU
-					if(opcodeReduced>=16 && opcodeReduced<=25) begin
-            // Guarde el resultado en un buffer
-            resultadoReg = resultado;
-            // Vaya directo a Write-Back (WB)
-            stage <= `STAGE_WB_0;
+          stage <= `STAGE_EX_1;
+					if(opcodeReduced>=16 && opcodeReduced<=25) begin      // Si es una operacion de la ALU
+            operandoA <= salidaRegistros01;                     // Guarde los operandos obtenidos de los registros
+            operandoB <= salidaRegistros02;                     // Para la operacion
 					end 
-          else begin
-            // Si la instruccion es un salto
-            if (opcode == 209) begin
-              // guarde el primer valor para comparar
-              salidaRegistrosReg01 = salidaRegistros;
-
-              // Lea el otro valor
-              addressRegistrosLectura = dst;
-              writeRegistros = 0;
-            end
-            stage <= `STAGE_EX_1;
+          else if (opcode == 209) begin                         // Si es un Jump
+            nuevaDirrecion <= 0;                                // Agreguele 000 al inicio de la direccion dado que no existian suficientes bits en la instruccion
+            nuevaDirrecion[12:0] <= saltoIntruccion;            // Actualice el resto de la instrucción
+            salidaRegistrosReg01 <= salidaRegistros01;          // Guarde las salidas de los registros
+            salidaRegistrosReg02 <= salidaRegistros02;          // Para su comparación
+          end
+          else if (opcode == 19) begin                          // Si es un Store directo
+            salidaRegistrosReg01 <= salidaRegistros01;          // Guarde el contenido del registro DST
           end
 				end
+
+        //############################################################################################
 
 				`STAGE_EX_1: begin
-          // Si es un Load Directo o un store (usa memoria)
-          if(opcodeReduced==2 || opcodeReduced==11) begin
-            // Vaya a memory access (MA)
-            stage <= `STAGE_MA_0;
+          if(opcode == 19) begin                                        // Si es un Store directo (escribe en memoria)
+            stage <= `STAGE_MA_0;                                       // Vaya a Memory Access (MA)
 					end 
           
-          else begin
-            // Si la instruccion es un salto
-            if (opcode == 209) begin
-              // guarde el segundo valor para comparar
-              salidaRegistrosReg02 = salidaRegistros;
-              
-              // Si la condicion de salto se cumple
-              if (salidaRegistrosReg01 != salidaRegistrosReg02) begin
-                // Cambie la instruccion siguiente a la indicada
-                PC = saltoIntruccion;
-                MAR = saltoIntruccion;
+          else begin                                                    // De lo contrario (no interactua con la memoria)
+            if (opcode == 209) begin                                    // Si la instruccion es un Jump
+              if (salidaRegistrosReg01 != salidaRegistrosReg02) begin   // Si los dos registros ingresados en la instruccion no tienen el mismo valor
+                PC <= nuevaDirrecion;                              // Cambie la instruccion siguiente a la indicada
               end
-              // Vuelva al fetch
-              stage <= `STAGE_FE_0;
+              stage <= `STAGE_FE_0;                                     // Vaya directo al Fetch de la siguiente instruccion
             end
 
-            // Si la instruccion es un Load INM o un Load Reg
-            else begin
-              stage <= `STAGE_WB_0;
+            else begin                                                  // Si es otra operacion (escribe en registros)
+              if (opcodeReduced>=16 && opcodeReduced<=25) begin         // Si la instruccion es un operacion de la ALU
+                resultadoReg = resultado;                               // Guarde el resultado de la operacion en un reg buffer
+              end   
+              stage <= `STAGE_WB_0;                                     // Vaya a Write Back (WB)
             end
           end
 
-					/*case(opcode)
-						`OP_LD: begin
-							stage <= `STAGE_MA_0;
-						end
+        end
 
-						`OP_STR: begin
-							stage <= `STAGE_MA_1;
-						end
-
-						default: begin
-							stage <= `STAGE_HLT;
-						end*/
-
-				end
+        //############################################################################################
 
 				`STAGE_MA_0: begin	
-				  stage <= `STAGE_MA_1;
-          // Si estamos haciendo un store
-          if (opcodeReduced == 2) begin
-            // Guardamos el valor de registros que queremos
-            // escribir en memoria
-            salidaRegistrosReg01 = salidaRegistros;
-            // Habilitamos escritura
-            writeMemoria = 1;
-            write = 1;
-          end
-          // Si estamos haciendo un Load directo
-          else begin
-            // Deshabilitamos escritura
-            writeMemoria = 0;
-            write = 0; //    <== se usa los reg y wires que entran y salen del cpu en vez de tener la meoria adentro del cpu
-          end
+				  stage <= `STAGE_MA_1;            
+          MBR_W <= salidaRegistrosReg01;    // Se guarda en data_in de memoria el valor del registro
+          MAR <= direccionMemoria;          // Se guarda la direccion de memoria en la que se desea hacer el store directo
 				end
+
+        //############################################################################################
 
 				`STAGE_MA_1: begin	
-          // Si estamos haciendo un store
-          if (opcodeReduced == 2) begin
-            // Cambiamos el valor de escritura
-            entradaMemoria = salidaRegistrosReg01;
-            MBR_W = salidaRegistrosReg01;
-            // Ya has terminado tu funcion
-            stage <= `STAGE_FE_0;
-          end
-          // Si estamos haciendo un Load directo
-          else begin
-            // Guardamos el valor de la memoria
-            salidaMemoriaReg = salidaMemoria;
-            // Continuar con escritura en registros
-            stage <= `STAGE_WB_0;
-          end
-
+          stage <= `STAGE_FE_0;
+          write <= 1;                       // Se escribe el valor en la memoria
 				end
+
+        //############################################################################################
 
 				`STAGE_WB_0: begin
           stage <= `STAGE_WB_1;
-          case (opcode)
-            `OPD_LD_INM: begin
-            end
-            `OPD_LD_REG: begin
-              // Guardamos el valor del registro src
-              salidaRegistrosReg01 = salidaRegistros;
-              // Cambiamos el valor de escritura al valor de src
-              entradaRegistros = salidaRegistrosReg01;
-            end
-            `OPD_LD_DIRECT: begin
-              // Cambiamos el valor de escritura al valor de la memoria
-              entradaRegistros = salidaMemoriaReg;
-            end
-            // Casos de opcode para Alu
-            default: begin
-              // Cambiamos el valor de escritura al valor obtenido de la Alu
-              entradaRegistros = resultadoReg;
-            end
-          endcase;
+          if(opcodeReduced>=16 && opcodeReduced<=25) begin      // Si es una operacion de la ALU
+            entradaRegistros <= resultadoReg;                   // Indicar que debe escribir el resultado de la operacion obtenido
+          end
+          else begin                                            // Si es un Load INM
+            entradaRegistros <= 0;                              // Ponga los primeros bits no aprovechados en 0
+            entradaRegistros[15:0] <= valorInmediato;           // Indicar que debe escribir el valor inmediato obtenido de la instruccion
+          end
 				end
+
+        //############################################################################################
 
 				`STAGE_WB_1: begin
           stage <= `STAGE_FE_0;
-          // Escribimos el valor en los registros
-          writeRegistros = 1;
+          writeRegistros <= 1;                                  // Escribimos el valor en los registros
 				end
+
+        //############################################################################################
 
 				default: begin
 					stage <= `STAGE_HLT;
 				end
+
+        //############################################################################################
+
 			endcase
 		end
 	end
 
 ALU alu(resultado, C, S, O, Z, operandoA, operandoB, opcodeReduced);
 
-/*
-Mem_D32b_A16b mem(salidaMemoria, 					   	// output de la memoria
-						entradaMemoria,   						    // input de la memoria
-						addressMemoria,						        // address de memoria de la celda que se quiere leer
-						writeMemoria,									    // write = 0, ya que queremos leer la memoria y no guardar nada
-						clk);									            // clk en 1, ya que la escritura se ejecuta en clk = 0
-*/
 registersArray registros(.inputData(entradaRegistros), 
 											 .dirrInput(addressRegistrosEscritura), 
-											 .dirrOutput1(addressRegistrosLectura), 
-											 .dirrOutput2(addressRegistrosLectura), 
-											 .outputData1(salidaRegistros), 
-											 .outputData2(salidaRegistros), 
+											 .dirrOutput1(addressRegistrosLectura01), 
+											 .dirrOutput2(addressRegistrosLectura02), 
+											 .outputData1(salidaRegistros01), 
+											 .outputData2(salidaRegistros02), 
 											 .write_en(writeRegistros), 
 											 .clk(clk));
 

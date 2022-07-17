@@ -7,7 +7,7 @@
 0002	|	load 0											// counter							--> stored in r3
 0003	|	multiply r1 and r3, store result in r1
 0004	|	r3 = r3 + 1
-0005	|	jump to 00003 if counter == r0 
+0005	|	jump to 00003 if counter != r0 
 0006    |   store r1 en 0x8000
 0007	|	end program
 
@@ -20,7 +20,7 @@
 0002	|	load 0											// counter							--> stored in r3
 0003	|	multiply r1 and r3, store result in r1
 0004	|	r3 = r3 + 1
-0005	|	jump to 00003 if counter == r0 
+0005	|	jump to 00003 if counter != r0 
 0006    |   store r1 en 0x8000
 0007	|	end program
 
@@ -30,18 +30,35 @@ wich we want to calcute the factorial
 data[65535] = 'hABC		--> with ABC the number in hexadecimal
 2**16-1 = 65535			-->last memory cell of the main memory
 
-00001_000_00000000_0000000000001100		--> 12 en r0
-00001_001_00000000_0000000000000001		--> 1 en r1
-00001_010_00000000_0000000000000001		--> 1 en r2
-00001_011_00000000_0000000000000001		--> 1 en r3	(const)
+00001_001_00000000_0000000000001100		--> 12 en r0            --> Immediate Addressing Mode
+00001_001_00000001_0000000000000001		--> 1 en r1             --> Immediate Addressing Mode
+00001_001_00000010_0000000000000001		--> 1 en r2             --> Immediate Addressing Mode
+00001_001_00000011_0000000000000001		--> 1 en r3	(const)     --> Immediate Addressing Mode
 10111_000_00000001_0000000000000010		--> multiplicar r1 y r2, guardar resultado en r1
 10101_000_00000010_0000000000000011		--> add 1 to r2
-11010_000_00000000_1111101000000001		-->salta a 0X8000 si r0 (000) == r1 (001)
-00010_000_00000001_0001111101000000		--> se guarda el contenido de r1 en 0X8000
+11010_001_00000000_0000000000100001		-->salta a 0X0004 si r0 (000) == r1 (001)
+00010_011_00000001_0001111101000000		--> se guarda el contenido de r1 en 0X8000
 00000_000_00000000_0000000000000000		--> NOP
+
+0001111101000000
+0000000000000100
 
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 0 -     iverilog cpu.v alu.v registros.v memoria.v cpu_tb.v
 1 -     vvp a.out
 2 -     gtkwave cpu.vcd
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+12! --> 11100100011001111110000000000
+
+
+##########################################################################################
+data_In recibe la Instruction con la address y la direcion de registro en vez del contenido del registro 
+hay que pasar el contenido del reg01, no una instrucion
+el jump no funciona
+
+--> por alguna razon se guarda el operandoB del salto en r1, donde deberia ser el resultado
+el salto no funciona
+
+
+el jump no funciona, y despues el address es 8000/0001111101000000

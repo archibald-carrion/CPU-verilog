@@ -24,7 +24,7 @@ module Memoria_tb;
     $dumpvars;
     clk = 0; reset = 1;
     #1 reset = 0;
-    #128 $finish;
+    #500 $finish;
   end
   
   CPU cpu(.MBR_W(bus_de_datos_salida),

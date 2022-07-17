@@ -32,29 +32,6 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 	
 		//solo hay que hacer la parte de decodificacion de la instruccion, no hay que ejecutarla <- hay que verificar eso
 		case (opcode)
-			`OP_NOP: begin	//NO OPERATION
-				resultado = 'hXXXX_XXXX;
-				C = 'bx;
-				S = 'bx;
-				O = 'bx;
-				Z = 'bx;
-			end
-			
-			`OP_HLT: begin	//HALT
-				resultado = 'hXXXX_XXXX;
-				C = 'bx;
-				S = 'bx;
-				O = 'bx;
-				Z = 'bx;
-			end
-			
-			//`OP_LD: begin 	//LOAD
-			
-			//end
-			
-			//`OP_STR: begin	//STORE
-			
-			//end
 			
 			`OP_NOT: begin	//NOT gate
 				resultado = ~operando_a;
@@ -82,10 +59,6 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 			
 			end
 			
-			//`OP_XOR: begin	//XOR gate
-			
-			//end
-			
 			`OP_NEG: begin	//negation
 				resultado = -operando_a;			
 				C = 0;
@@ -110,43 +83,13 @@ module ALU(resultado, C, S, O, Z, operando_a, operando_b, opcode);
 			end
 			
 			`OP_MUL: begin	//multiplication
-        resultado64 = operando_a * operando_b;
-        resultado = resultado64[31:0];
+        		resultado64 = operando_a * operando_b;
+       			resultado = resultado64[31:0];
 				S = resultado[BITS_DATA-1:0];
-        O = |resultado64[63:32];
+       			O = |resultado64[63:32];
 				Z = ~(|resultado);
 			end
 			
-			
-			
-			//`OP_DIV: begin	//division
-			
-			//end
-			
-			//`OP_MOD: begin 	//modulo
-			
-			//end
-			
-			//`OP_JMP: begin
-			
-			//end
-			
-			//`OP_JC: begin
-			
-			//end
-			
-			//`OP_JS: begin
-			
-			//end
-			
-			//`OP_JO: begin
-			
-			//end
-			
-			//`OP_JZ: begin
-			
-			//end
-
 			default: begin
 				// El opcode no esta implementado o bien no es un opcode de ALU valido. Intencionalmente propagaremos Xs (indeterminado) a las salidas 
 				resultado = 'hXXXX_XXXX;
