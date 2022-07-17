@@ -40,16 +40,17 @@ module Mem_D32b_A16b(data_out, data_in, address, write, clk);
   // Otro tutorial: https://www.fullchipdesign.com/readmemh.htm
   //
   // De momento, los datos se inicializan manualmente
+  
   initial begin    
-    data[0] = 'b00001_001_00000000_0000000000001101;  //load  const 13
-    data[1] = 'b00001_001_00000001_0000000000000001;  //load resultado total
-    data[2] = 'b00001_001_00000010_0000000000000001;  //load contador que va de 1 a 13
-    data[3] = 'b00001_001_00000011_0000000000000001;  //load const 1
-    data[4] = 'b10111_000_00000001_0000000000000010;  //multiplicar
-    data[5] = 'b10101_000_00000010_0000000000000011;  //incrementar
-    data[6] = 'b11010_001_00000000_0000000000100010;  //jump
-    data[7] = 'b00010_011_00000001_0001111101000000;  //store
-    data[8] = 'b00000_000_00000000_0000000000000000;  //nop
+    data[0] = 'b00001_001_00000000_0000000000001101;  // load en registro 0 la constante 13
+    data[1] = 'b00001_001_00000001_0000000000000001;  // load en registro 1 la variable 1 (resultado final)
+    data[2] = 'b00001_001_00000010_0000000000000001;  // load enregistro 2 la variable contador que empieza en 1 (multiplicador)
+    data[3] = 'b00001_001_00000011_0000000000000001;  // load en registro 3 la constante 1 (incrementador)
+    data[4] = 'b10111_000_00000001_0000000000000010;  // se multiplican los regitros 1 y 2, se guarda el resultado en registro 1
+    data[5] = 'b10101_000_00000010_0000000000000011;  // se suman los reigstros 2 y 3, se guarda el resultado en registro 2
+    data[6] = 'b11010_001_00000000_0000000000100010;  // se hace un jump hacia la instruction de address 4 si los registros 0 y 2 son diferentes
+    data[7] = 'b00010_011_00000001_0001111101000000;  // store el contenido del registro 1 en la dirección 0X8000
+    data[8] = 'b00000_000_00000000_0000000000000000;  // NOP (fin del programa)
   end
   
   // Workaround para lograr visualizar la memoria en gtkwave
