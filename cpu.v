@@ -106,7 +106,7 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
           
           // Decode de uso general
           opcode <= IR[31:24];                               // Opcode con dir (Load inmediato, Store directo, Jump)
-          opcodeReduced <= IR[31:27];                        // Opcode sin dir (Operaciones de la ALU)
+          opcodeReduced <= IR[31:27];                        // Opcode sin dir (Operaciones de la ALU y NOP)
 
           // Decode para Load INM u operaciones de la ALU
           addressRegistrosEscritura <= IR[18:16];            // Address al registro donde se va a escribir (dst)
@@ -134,6 +134,9 @@ module CPU(MBR_W, write, MAR, MBR_R, reset, clk);
           end
           else if ((opcodeReduced>=16 && opcodeReduced<=25) || opcode == 209) begin      // Si es una operacion de ALU o un Jump
             writeRegistros <= 0;                                                         // leer el contenido de dos registros
+          end
+          else if (opcode == 0) begin                                                    // Si se le pide al CPU que no realice operaciones
+            stage <= `STAGE_HLT;                                                         // Detenga la CPU
           end
 				end
 
